@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>突击队 - 管理平台</title>
+    <!--favicon-->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- simplebar CSS-->
+    <link href="plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <!--Data Tables -->
+    <link href="plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <!-- animate CSS-->
+    <link href="css/animate.css" rel="stylesheet" type="text/css"/>
+    <!-- Icons CSS-->
+    <link href="css/icons.css" rel="stylesheet" type="text/css"/>
+    <!-- Sidebar CSS-->
+    <link href="css/sidebar-menu.css" rel="stylesheet"/>
+    <!-- Custom Style-->
+    <link href="css/app-style.css" rel="stylesheet"/>
+    <!--Select Plugins-->
+    <link href="plugins/select2/css/select2.min.css" rel="stylesheet"/>
+    <!--inputtags-->
+    <link href="plugins/inputtags/css/bootstrap-tagsinput.css" rel="stylesheet"/>
+    <!--multi select-->
+    <link href="plugins/jquery-multi-select/multi-select.css" rel="stylesheet" type="text/css">
+    <!--Bootstrap Datepicker-->
+    <link href="plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <!--Touchspin-->
+    <link href="plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- Start wrapper-->
+<div id="wrapper">
+
+    <div class="loader-wrapper">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!--Start sidebar-wrapper-->
+    <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+        <div class="brand-logo">
+            <a href="index.html">
+                <img src="images/logo-icon.png" class="logo-icon" alt="logo icon">
+                <h5 class="logo-text">突击队管理平台</h5>
+            </a>
+        </div>
+        <div class="user-details">
+            <div class="media align-items-center user-pointer collapsed" data-toggle="collapse"
+                 data-target="#user-dropdown">
+                <div class="avatar"><img class="mr-3 side-user-img" src="images/avatars/avatar-13.png"
+                                         alt="user avatar"></div>
+                <div class="media-body">
+                    <h6 class="side-user-name">管理员</h6>
+                </div>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu do-nicescrol">
+            <li class="sidebar-header">主页导航</li>
+
+            <li>
+                <a href="javaScript:void();" class="waves-effect">
+                    <i class="zmdi zmdi-view-dashboard"></i> <span>人员管理</span><i
+                        class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="admin_staff_tjd.html"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
+                    <li><a href="admin_staff_xmjl.html"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javaScript:void();" class="waves-effect">
+                    <i class="zmdi zmdi-card-travel"></i>
+                    <span>需求管理</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="admin-staff-demands-add.html"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
+                    <li><a href="admin_staff_demands_history.html"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-header">LABELS</li>
+            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a>
+            </li>
+            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-chart-donut text-success"></i>
+                <span>Warning</span></a></li>
+            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a>
+            </li>
+        </ul>
+
+    </div>
+    <!--End sidebar-wrapper-->
+
+    <!--Start topbar header-->
+    <header class="topbar-nav">
+        <nav class="navbar navbar-expand fixed-top">
+            <ul class="navbar-nav mr-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link toggle-menu" href="javascript:void();">
+                        <i class="icon-menu menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form class="search-bar">
+                        <input type="text" class="form-control" placeholder="Enter keywords">
+                        <a href="javascript:void();"><i class="icon-magnifier"></i></a>
+                    </form>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav align-items-center right-nav-link">
+                <li class="nav-item dropdown-lg">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
+                       href="javascript:void();">
+                        <i class="fa fa-bell-o"></i><span class="badge badge-info badge-up">14</span></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                您有 14 条通知
+                                <span class="badge badge-info">14</span>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="javaScript:void();">
+                                    <div class="media">
+                                        <i class="zmdi zmdi-accounts fa-2x mr-3 text-info"></i>
+                                        <div class="media-body">
+                                            <h6 class="mt-0 msg-title">XX项目</h6>
+                                            <p class="msg-info">xx项目申请2人...</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                            <li class="list-group-item text-center"><a href="javaScript:void();">查看所有通知</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+                        <span class="user-profile"><img src="images/avatars/avatar-13.png" class="img-circle"
+                                                        alt="user avatar"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li class="dropdown-item user-details">
+                            <a href="javaScript:void();">
+                                <div class="media">
+                                    <div class="avatar"><img class="align-self-start mr-3"
+                                                             src="images/avatars/avatar-13.png" alt="user avatar"></div>
+                                    <div class="media-body">
+                                        <h6 class="mt-2 user-title">管理员</h6>
+                                        <p class="user-subtitle">admin@admin.com</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><i class="icon-wallet mr-2"></i> 账户</li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><i class="icon-power mr-2"></i> 退出</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!--End topbar header-->
+
+    <div class="clearfix"></div>
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumb-->
+            <div class="row pt-2 pb-2">
+                <div class="col-sm-9">
+                    <h4 class="page-title">新增需求</h4>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javaScript:void();">主页导航</a></li>
+                        <li class="breadcrumb-item"><a href="javaScript:void();">需求管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">新增需求</li>
+                    </ol>
+                </div>
+                <div class="col-sm-3">
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header"><i class="fa fa-table"></i> 需求列表</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example" class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>需求编号</th>
+                                        <th>申请时间</th>
+                                        <th>项目名称</th>
+                                        <th>项目经理</th>
+                                        <th>工号</th>
+                                        <th>支撑时间</th>
+                                        <th>需求地区</th>
+                                        <th>需求人数</th>
+                                        <th>人员技能</th>
+                                        <th>需求备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td data-toggle="modal" data-target="#formemodal">2019010130</td>
+                                        <td>2020/01/01</td>
+                                        <td>北京项目</td>
+                                        <td>李明</td>
+                                        <td>A010004</td>
+                                        <td>2020/01/01-2020/01/07</td>
+                                        <td>北京</td>
+                                        <td>1</td>
+                                        <td>安服基础 渗透测试 天眼分析</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-toggle="modal" data-target="#formemodal">2020010101</td>
+                                        <td>2020/01/01</td>
+                                        <td>成都项目</td>
+                                        <td>李明</td>
+                                        <td>A010004</td>
+                                        <td>2020/01/01-2020/01/07</td>
+                                        <td>成都</td>
+                                        <td>1</td>
+                                        <td>渗透测试 天眼分析</td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Row-->
+            <div class="col-lg-4">
+                <!-- Large Size Modal -->
+
+                <!--
+                <button  class="btn btn-light btn-block m-1" data-toggle="modal" data-target="#formemodal">Modal with form</button>
+                处理模板 data-toggle="modal" data-target="#formemodal"
+                -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="formemodal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">需求单</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+
+
+                                    <div class="col-12 col-lg-12 col-xl-6">
+                                        <div class="card">
+                                            <div class="card-header text-uppercase">地区/人员</div>
+                                            <div class="card-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <select multiple="multiple" class="multi-select"
+                                                                id="my_multi_select2" name="my_multi_select2[]">
+                                                            <optgroup label="NFC EAST">
+                                                                <option>张1</option>
+                                                                <option>王1</option>
+                                                                <option>赵1</option>
+                                                                <option>刘1</option>
+                                                            </optgroup>
+                                                            <optgroup label="NFC NORTH">
+                                                                <option>张2</option>
+                                                                <option>王2</option>
+                                                                <option>赵2</option>
+                                                                <option>刘2</option>
+                                                            </optgroup>
+                                                            <optgroup label="NFC SOUTH">
+                                                                <option>张3</option>
+                                                                <option>王3</option>
+                                                                <option>赵3</option>
+                                                                <option>刘3</option>
+                                                            </optgroup>
+                                                            <optgroup label="NFC WEST">
+                                                                <option>张4</option>
+                                                                <option>王4</option>
+                                                                <option>赵4</option>
+                                                                <option>刘4</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="input-1">地区</label>
+                                        <input type="text" class="form-control" id="input-1" placeholder="">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="input-2">人员</label>
+                                        <div>
+                                            <select class="form-control multiple-select" multiple="multiple">
+                                                <option>张三</option>
+                                                <option>李四</option>
+                                                <option>王五</option>
+                                                <option>小李</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-3">处理状态</label>
+                                        <div>
+                                            <select class="form-control single-select">
+                                                <option selected="selected" disabled="disabled" style='display: none'
+                                                        value=''></option>
+                                                <option>受理</option>
+                                                <option>驳回</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-4">处理备注</label>
+                                        <input type="text" class="form-control" id="input-4" placeholder="">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
+                                            确认
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <!-- End container-fluid-->
+
+    </div><!--End content-wrapper-->
+    <!--Start Back To Top Button-->
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
+
+    <!--Start footer-->
+    <footer class="footer">
+        <div class="container">
+            <div class="text-center">
+                Copyright © 2020 突击队管理平台
+            </div>
+        </div>
+    </footer>
+    <!--End footer-->
+
+    <!--start color switcher-->
+    <div class="right-sidebar">
+        <div class="switcher-icon">
+            <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+        </div>
+        <div class="right-sidebar-content">
+
+            <p class="mb-0">Gaussion Texture</p>
+            <hr>
+
+            <ul class="switcher">
+                <li id="theme1"></li>
+                <li id="theme2"></li>
+                <li id="theme3"></li>
+                <li id="theme4"></li>
+                <li id="theme5"></li>
+                <li id="theme6"></li>
+            </ul>
+
+            <p class="mb-0">Gradient Background</p>
+            <hr>
+
+            <ul class="switcher">
+                <li id="theme7"></li>
+                <li id="theme8"></li>
+                <li id="theme9"></li>
+                <li id="theme10"></li>
+                <li id="theme11"></li>
+                <li id="theme12"></li>
+            </ul>
+
+        </div>
+    </div>
+    <!--end color cwitcher-->
+
+</div><!--End wrapper-->
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<!-- simplebar js -->
+<script src="plugins/simplebar/js/simplebar.js"></script>
+<!-- sidebar-menu js -->
+<script src="js/sidebar-menu.js"></script>
+
+<!-- Custom scripts -->
+<script src="js/app-script.js"></script>
+
+<!--Data Tables js-->
+<script src="plugins/bootstrap-datatable/js/jquery.dataTables.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/dataTables.buttons.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/jszip.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/pdfmake.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/vfs_fonts.js"></script>
+<script src="plugins/bootstrap-datatable/js/buttons.html5.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/buttons.print.min.js"></script>
+<script src="plugins/bootstrap-datatable/js/buttons.colVis.min.js"></script>
+
+<!--Bootstrap Touchspin Js-->
+<script src="plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.js"></script>
+<script src="plugins/bootstrap-touchspin/js/bootstrap-touchspin-script.js"></script>
+
+<!--Select Plugins Js-->
+<script src="plugins/select2/js/select2.min.js"></script>
+<!--Inputtags Js-->
+<script src="plugins/inputtags/js/bootstrap-tagsinput.js"></script>
+
+<!--Bootstrap Datepicker Js-->
+<script src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+<!--设置默认排序-->
+<script>
+    window.onload = function () {
+        document.getElementsByClassName("sorting_asc")[0].click();
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        //Default data table
+        $('#default-datatable').DataTable();
+
+
+        var table = $('#example').DataTable({
+            lengthChange: false,
+            buttons: ['excel', 'print', 'colvis']
+        });
+
+        table.buttons().container()
+            .appendTo('#example_wrapper .col-md-6:eq(0)');
+
+    });
+
+</script>
+
+<script>
+    $('#default-datepicker').datepicker({
+        todayHighlight: true
+    });
+    $('#autoclose-datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    $('#inline-datepicker').datepicker({
+        todayHighlight: true
+    });
+
+    $('#dateragne-picker .input-daterange').datepicker({});
+
+</script>
+
+<!--Multi Select Js-->
+<script src="plugins/jquery-multi-select/jquery.multi-select.js"></script>
+<script src="plugins/jquery-multi-select/jquery.quicksearch.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.single-select').select2();
+
+        $('.multiple-select').select2();
+
+        //multiselect start
+
+        $('#my_multi_select1').multiSelect();
+        $('#my_multi_select2').multiSelect({
+            selectableOptgroup: true
+        });
+
+        $('#my_multi_select3').multiSelect({
+            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            afterInit: function (ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function (e) {
+                        if (e.which === 40) {
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function (e) {
+                        if (e.which == 40) {
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+            },
+            afterSelect: function () {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function () {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+
+        $('.custom-header').multiSelect({
+            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+            selectionHeader: "<div class='custom-header'>Selection items</div>",
+            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>
+

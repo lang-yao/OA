@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>突击队 - 管理平台</title>
+    <!--favicon-->
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
+
+    <!-- simplebar CSS-->
+    <link href="{% static 'plugins/simplebar/css/simplebar.css' %}" rel="stylesheet"/>
+    <!-- Bootstrap core CSS-->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <!-- animate CSS-->
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- Icons CSS-->
+    <link href="{% static 'css/icons.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- Sidebar CSS-->
+    <link href="{% static 'css/sidebar-menu.css' %}" rel="stylesheet"/>
+    <!-- Custom Style-->
+    <link href="{% static 'css/app-style.css' %}" rel="stylesheet"/>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- Start wrapper-->
+
+
+<div id="wrapper">
+
+
+    <div class="loader-wrapper">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!--Start sidebar-wrapper-->
+    <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+        <div class="brand-logo">
+            <a href="{% url '管理员默认页面模块' %}">
+                <img src="{% static 'images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
+                <h5 class="logo-text">突击队管理平台</h5>
+            </a>
+        </div>
+        <div class="user-details">
+            <div class="media align-items-center user-pointer collapsed" data-toggle="collapse"
+                 data-target="#user-dropdown">
+                <div class="avatar"><img class="mr-3 side-user-img" src="{% static 'images/avatars/avatar-13.png' %}"
+                                         alt="user avatar"></div>
+                <div class="media-body">
+                    <h6 class="side-user-name">{{ request.user }}</h6>
+                </div>
+            </div>
+        </div>
+        <ul class="sidebar-menu do-nicescrol">
+            <li class="sidebar-header">主页导航</li>
+            <li>
+                <a href="javaScript:void(0);" class="waves-effect">
+                    <i class="zmdi zmdi-view-dashboard"></i> <span>人员管理</span><i
+                        class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="{% url '管理员突击队模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
+                    <li><a href="{% url '管理员默认页面模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javaScript:void(0);" class="waves-effect">
+                    <i class="zmdi zmdi-card-travel"></i>
+                    <span>需求管理</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="admin_staff_demands_add.html"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
+                    <li><a href="admin_staff_demands_history.html"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-header">LABELS</li>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a>
+            </li>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-chart-donut text-success"></i>
+                <span>Warning</span></a></li>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a>
+            </li>
+        </ul>
+
+    </div>
+    <!--End sidebar-wrapper-->
+
+    <!--Start topbar header-->
+    <header class="topbar-nav">
+        <nav class="navbar navbar-expand fixed-top">
+            <ul class="navbar-nav mr-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link toggle-menu" href="javascript:void(0);">
+                        <i class="icon-menu menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form class="search-bar">
+                        <input type="text" class="form-control" placeholder="Enter keywords">
+                        <a href="javascript:void(0);"><i class="icon-magnifier"></i></a>
+                    </form>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav align-items-center right-nav-link">
+                <li class="nav-item dropdown-lg">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
+                       href="javascript:void(0);">
+                        <i class="fa fa-bell-o"></i><span class="badge badge-info badge-up">14</span></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                您有 14 条通知
+                                <span class="badge badge-info">14</span>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="javaScript:void(0);">
+                                    <div class="media">
+                                        <i class="zmdi zmdi-accounts fa-2x mr-3 text-info"></i>
+                                        <div class="media-body">
+                                            <h6 class="mt-0 msg-title">XX项目</h6>
+                                            <p class="msg-info">xx项目申请2人...</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                            <li class="list-group-item text-center"><a href="javaScript:void(0);">查看所有通知</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+                        <span class="user-profile"><img src="{% static 'images/avatars/avatar-13.png' %}"
+                                                        class="img-circle" alt="user avatar"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li class="dropdown-item user-details">
+                            <a href="javaScript:void(0);">
+                                <div class="media">
+                                    <div class="avatar"><img class="align-self-start mr-3"
+                                                             src="{% static 'images/avatars/avatar-13.png' %}"
+                                                             alt="user avatar"></div>
+                                    <div class="media-body">
+                                        <h6 class="mt-2 user-title">{{ request.user }}</h6>
+                                        <p class="user-subtitle">admin@admin.com</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><i class="icon-wallet mr-2"></i> 账户</li>
+                        <li class="dropdown-divider"></li>
+                        {% if user.is_authenticated %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a
+                                    href="javascript:{document.getElementById('logout').submit()}">退出</a></li>
+                            <form id='logout' action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden">
+                            </form>
+
+                        {% else %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="{% url 'login' %}">登陆</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!--End topbar header-->
+
+    <div class="clearfix"></div>
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-white mb-0">突击队人员 </p>
+                            <div class="">
+                                <h4 class="mb-0 py-3">{{ data }}<span class="float-right"><i
+                                        class="fa fa-user"></i></span></h4>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-white mb-0">已分配 </p>
+                            <div class="">
+                                <h4 class="mb-0 py-3">{{ data1 }}<span class="float-right"><i
+                                        class="fa fa-user"></i></span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-white mb-0">待分配 </p>
+                            <div class="">
+                                <h4 class="mb-0 py-3">{{ data0 }}<span class="float-right"><i
+                                        class="fa fa-user"></i></span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--End Row-->
+
+
+            <!--Start Back To Top Button-->
+            <a href="javaScript:void(0);" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+            <!--End Back To Top Button-->
+
+            <!--Start footer-->
+            <footer class="footer">
+                <div class="container">
+                    <div class="text-center">
+                        Copyright © 2020 突击队管理平台
+                    </div>
+                </div>
+            </footer>
+            <!--End footer-->
+
+            <!--start color switcher-->
+            <div class="right-sidebar">
+                <div class="switcher-icon">
+                    <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+                </div>
+                <div class="right-sidebar-content">
+
+                    <p class="mb-0">Gaussion Texture</p>
+                    <hr>
+
+                    <ul class="switcher">
+                        <li id="theme1"></li>
+                        <li id="theme2"></li>
+                        <li id="theme3"></li>
+                        <li id="theme4"></li>
+                        <li id="theme5"></li>
+                        <li id="theme6"></li>
+                    </ul>
+
+                    <p class="mb-0">Gradient Background</p>
+                    <hr>
+
+                    <ul class="switcher">
+                        <li id="theme7"></li>
+                        <li id="theme8"></li>
+                        <li id="theme9"></li>
+                        <li id="theme10"></li>
+                        <li id="theme11"></li>
+                        <li id="theme12"></li>
+                    </ul>
+
+                </div>
+            </div>
+            <!--end color cwitcher-->
+
+        </div><!--End wrapper-->
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+        <!-- simplebar js -->
+        <script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>
+        <!-- sidebar-menu js -->
+        <script src="{% static 'js/sidebar-menu.js' %}"></script>
+
+        <!-- Custom scripts -->
+        <script src="{% static 'js/app-script.js' %}"></script>
+
+        <!-- Chart js -->
+        <script src="{% static 'plugins/Chart.js/Chart.min.js' %}"></script>
+
+        <!-- Index2 js -->
+        <script src="{% static 'js/index2.js' %}"></script>
+    </div>
+</div>
+</body>
+</html>

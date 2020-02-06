@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>突击队 - 管理平台</title>
+    <!--favicon-->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <!-- simplebar CSS-->
+    <link href="{% static 'plugins/simplebar/css/simplebar.css' %}" rel="stylesheet"/>
+    <!-- Bootstrap core CSS-->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <!-- animate CSS-->
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- Icons CSS-->
+    <link href="{% static 'css/icons.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- Sidebar CSS-->
+    <link href="{% static 'css/sidebar-menu.css' %}" rel="stylesheet"/>
+    <!-- Custom Style-->
+    <link href="{% static 'css/app-style.css' %}" rel="stylesheet"/>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- Start wrapper-->
+<div id="wrapper">
+
+    <div class="loader-wrapper">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center error-pages">
+                    <h1 class="error-title text-white"> 404</h1>
+                    <h2 class="error-sub-title text-white"></h2>
+
+                    <p class="error-message text-white text-uppercase">抱歉，发生错误，找不到请求的页面 ！</p>
+
+                    <div class="mt-4">
+                        <a href="javascript:history.go(-1)" class="btn btn-light btn-round m-1">上一页 </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="text-white">Copyright © 2020 突击队管理平台 | 版权所有.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--start color switcher-->
+    <div class="right-sidebar">
+        <div class="switcher-icon">
+            <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+        </div>
+        <div class="right-sidebar-content">
+
+            <p class="mb-0">Gaussion Texture</p>
+            <hr>
+
+            <ul class="switcher">
+                <li id="theme1"></li>
+                <li id="theme2"></li>
+                <li id="theme3"></li>
+                <li id="theme4"></li>
+                <li id="theme5"></li>
+                <li id="theme6"></li>
+            </ul>
+
+            <p class="mb-0">Gradient Background</p>
+            <hr>
+
+            <ul class="switcher">
+                <li id="theme7"></li>
+                <li id="theme8"></li>
+                <li id="theme9"></li>
+                <li id="theme10"></li>
+                <li id="theme11"></li>
+                <li id="theme12"></li>
+            </ul>
+
+        </div>
+    </div>
+    <!--end color cwitcher-->
+
+</div><!--wrapper-->
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- simplebar js -->
+<script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>
+<!-- sidebar-menu js -->
+<script src="{% static 'js/sidebar-menu.js' %}"></script>
+
+<!-- Custom scripts -->
+<script src="{% static 'js/app-script.js' %}"></script>
+
+</body>
+</html>

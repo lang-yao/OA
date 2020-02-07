@@ -1,17 +1,18 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Tjd_staff
-# Create your views here.
-from django.shortcuts import redirect
-
 # 访问限制模块 @login_required
 from django.contrib.auth.decorators import login_required
+# Create your views here.
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+
+from .models import Tjd_staff
 
 
 @login_required
 def tjd_index(request):
     # 突击队人员总数
     tjds = Tjd_staff.objects.all().count()
+    print(tjds)
     # 已分配的突击队人员总数
     tjds1 = Tjd_staff.objects.filter(zhuangtai=0).count()
     # 未分配的突击队人员总数
@@ -56,8 +57,10 @@ def tjd_add(request):
         return redirect('管理员突击队模块')
 
 
-def tjd_del(request):
-    return redirect('管理员突击队模块')
+def tjd_del(request, id):
+    tjd_renyuan = Tjd_staff.objects.get(id=id)
+    tjd_renyuan.delete()
+    return HttpResponse('success', safe=False)
 
 
 def xmjl(request):

@@ -26,6 +26,7 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
 
                   # 登陆模块路由
+                  path('', include('account.urls')),
                   path('account/', include('account.urls')),
 
                   # path("favicon.ico", RedirectView.as_view(url='/static/favicon.ico')),

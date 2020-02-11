@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
-
+from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Tjd_staff
 
 
@@ -57,10 +57,12 @@ def tjd_add(request):
         return redirect('管理员突击队模块')
 
 
-def tjd_del(request, id):
-    tjd_renyuan = Tjd_staff.objects.get(id=id)
-    tjd_renyuan.delete()
-    return HttpResponse('success', safe=False)
+def tjd_del(request):
+    id = request.POST['id']
+    print(id)
+    # tjd_renyuan = Tjd_staff.objects.get(staff_id=)
+    # tjd_renyuan.delete()
+    return HttpResponse('success')
 
 
 def xmjl(request):

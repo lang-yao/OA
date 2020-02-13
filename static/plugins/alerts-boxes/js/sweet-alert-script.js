@@ -64,3 +64,21 @@ function alert_del_someb(self) {
     });
 
 }
+
+function modify_msg(self, per_id) {
+    // change_msg
+    person = {
+        'name': self.parentElement.children[1].innerText,
+        'work_number': self.parentElement.children[2].innerText,
+        'skills': self.parentElement.children[3].innerText,
+        'future_direction': self.parentElement.children[5].innerText,
+        'location': self.parentElement.children[6].innerText,
+        'level': self.parentElement.children[7].innerText,
+    };
+    modify = document.getElementById('formemodal').children[0].lastElementChild.lastElementChild.lastElementChild.children;
+    modify[0].children[1].value = person['name'];
+    modify[1].children[1].value = person['work_number'];
+    modify[4].children[1].value = person['location'];
+    modify[5].children[1].value = person['level'];
+
+}

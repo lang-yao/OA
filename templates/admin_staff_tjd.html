@@ -243,7 +243,8 @@
                                     {% for tjd_list in tjds %}
                                         <tr>
                                             <input value="{{ tjd_list.id }}" type="hidden"/>
-                                            <td data-toggle="modal" data-target="#formemodal">
+                                            <td data-toggle="modal" data-target="#formemodal"
+                                                onclick="modify_msg(this,{{ tjd_list.id }})">
                                                 {{ tjd_list.name }}</td>
                                             <td>{{ tjd_list.staff_id }}</td>
                                             <td>{{ tjd_list.jineng }}</td>
@@ -447,7 +448,7 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-light" id="addyes"><i
                                                 class="fa fa-check-square-o"></i><a
-                                                href="javascript:{document.getElementById('addyes').submit()}">确认</a>
+                                                href="javascript:{document.getElementById('addyes').click()}">确认</a>
                                         </button>
                                         <input type="hidden">
 

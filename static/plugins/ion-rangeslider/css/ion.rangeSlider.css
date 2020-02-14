@@ -165,7 +165,6 @@
 .irs-disabled {
     opacity: 0.4;
 }
-
 .lt-ie9 .irs-disabled {
     filter: alpha(opacity=40);
 }

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,32 +9,36 @@
     <meta name="author" content=""/>
     <title>突击队 - 管理平台</title>
     <!--favicon-->
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
     <!-- simplebar CSS-->
-    <link href="plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
+    <link href="{% static 'plugins/simplebar/css/simplebar.css' %}" rel="stylesheet"/>
     <!-- Bootstrap core CSS-->
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
     <!--Data Tables -->
-    <link href="plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
-    <link href="plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css' %}" rel="stylesheet"
+          type="text/css">
     <!-- animate CSS-->
-    <link href="css/animate.css" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet" type="text/css"/>
     <!-- Icons CSS-->
-    <link href="css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/icons.css' %}" rel="stylesheet" type="text/css"/>
     <!-- Sidebar CSS-->
-    <link href="css/sidebar-menu.css" rel="stylesheet"/>
+    <link href="{% static 'css/sidebar-menu.css' %}" rel="stylesheet"/>
     <!-- Custom Style-->
-    <link href="css/app-style.css" rel="stylesheet"/>
+    <link href="{% static 'css/app-style.css' %}" rel="stylesheet"/>
     <!--Select Plugins-->
-    <link href="plugins/select2/css/select2.min.css" rel="stylesheet"/>
+    <link href="{% static 'plugins/select2/css/select2.min.css' %}" rel="stylesheet"/>
     <!--inputtags-->
-    <link href="plugins/inputtags/css/bootstrap-tagsinput.css" rel="stylesheet"/>
+    <link href="{% static 'plugins/inputtags/css/bootstrap-tagsinput.css' %}" rel="stylesheet"/>
     <!--multi select-->
-    <link href="plugins/jquery-multi-select/multi-select.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/jquery-multi-select/multi-select.css' %}" rel="stylesheet" type="text/css">
     <!--Bootstrap Datepicker-->
-    <link href="plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet"
+          type="text/css">
     <!--Touchspin-->
-    <link href="plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet"
+          type="text/css">
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -53,19 +58,25 @@
     <!--Start sidebar-wrapper-->
     <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
         <div class="brand-logo">
-            <a href="index.html">
-                <img src="images/logo-icon.png" class="logo-icon" alt="logo icon">
+            <a href="{% url '管理员默认页面模块' %}">
+                <img src="{% static 'images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
                 <h5 class="logo-text">突击队管理平台</h5>
             </a>
         </div>
         <div class="user-details">
             <div class="media align-items-center user-pointer collapsed" data-toggle="collapse"
                  data-target="#user-dropdown">
-                <div class="avatar"><img class="mr-3 side-user-img" src="images/avatars/avatar-13.png"
+                <div class="avatar"><img class="mr-3 side-user-img" src="{% static 'images/avatars/avatar-13.png' %}"
                                          alt="user avatar"></div>
                 <div class="media-body">
-                    <h6 class="side-user-name">管理员</h6>
+                    <h6 class="side-user-name">{{ request.user.first_name }}</h6>
                 </div>
+            </div>
+            <div id="user-dropdown" class="collapse">
+                <ul class="user-setting-menu">
+                    <li><a><i class="icon-user"></i> {{ user_group }}</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="icon-power"></i> 退出</a></li>
+                </ul>
             </div>
         </div>
 
@@ -73,33 +84,32 @@
             <li class="sidebar-header">主页导航</li>
 
             <li>
-                <a href="javaScript:void();" class="waves-effect">
+                <a href="javaScript:void(0);" class="waves-effect">
                     <i class="zmdi zmdi-view-dashboard"></i> <span>人员管理</span><i
                         class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="admin_staff_tjd.html"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
-                    <li><a href="admin_staff_xmjl.html"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
+                    <li><a href="{% url '管理员突击队模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
+                    <li><a href="{% url '管理员项目经理模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
                 </ul>
             </li>
             <li>
-                <a href="javaScript:void();" class="waves-effect">
+                <a href="javaScript:void(0);" class="waves-effect">
                     <i class="zmdi zmdi-card-travel"></i>
                     <span>需求管理</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="admin_staff_demands_add.html"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
-                    <li><a href="admin_staff_demands_history.html"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a>
-                    </li>
+                    <li><a href="{% url '新增需求模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
+                    <li><a href="{% url '历史需求模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a></li>
                 </ul>
             </li>
             <li class="sidebar-header">LABELS</li>
-            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a>
             </li>
-            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-chart-donut text-success"></i>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-chart-donut text-success"></i>
                 <span>Warning</span></a></li>
-            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a>
             </li>
         </ul>
 
@@ -111,14 +121,14 @@
         <nav class="navbar navbar-expand fixed-top">
             <ul class="navbar-nav mr-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link toggle-menu" href="javascript:void();">
+                    <a class="nav-link toggle-menu" href="javascript:void(0);">
                         <i class="icon-menu menu-icon"></i>
                     </a>
                 </li>
                 <li class="nav-item">
                     <form class="search-bar">
                         <input type="text" class="form-control" placeholder="Enter keywords">
-                        <a href="javascript:void();"><i class="icon-magnifier"></i></a>
+                        <a href="javascript:void(0);"><i class="icon-magnifier"></i></a>
                     </form>
                 </li>
             </ul>
@@ -126,7 +136,7 @@
             <ul class="navbar-nav align-items-center right-nav-link">
                 <li class="nav-item dropdown-lg">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
-                       href="javascript:void();">
+                       href="javascript:void(0);">
                         <i class="fa fa-bell-o"></i><span class="badge badge-info badge-up">14</span></a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <ul class="list-group list-group-flush">
@@ -135,7 +145,7 @@
                                 <span class="badge badge-info">14</span>
                             </li>
                             <li class="list-group-item">
-                                <a href="javaScript:void();">
+                                <a href="javaScript:void(0);">
                                     <div class="media">
                                         <i class="zmdi zmdi-accounts fa-2x mr-3 text-info"></i>
                                         <div class="media-body">
@@ -145,25 +155,26 @@
                                     </div>
                                 </a>
 
-                            <li class="list-group-item text-center"><a href="javaScript:void();">查看所有通知</a></li>
+                            <li class="list-group-item text-center"><a href="javaScript:void(0);">查看所有通知</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
-                        <span class="user-profile"><img src="images/avatars/avatar-13.png" class="img-circle"
-                                                        alt="user avatar"></span>
+                        <span class="user-profile"><img src="{% static 'images/avatars/avatar-13.png' %}"
+                                                        class="img-circle" alt="user avatar"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li class="dropdown-item user-details">
-                            <a href="javaScript:void();">
+                            <a href="javaScript:void(0);">
                                 <div class="media">
                                     <div class="avatar"><img class="align-self-start mr-3"
-                                                             src="images/avatars/avatar-13.png" alt="user avatar"></div>
+                                                             src="{% static 'images/avatars/avatar-13.png' %}"
+                                                             alt="user avatar"></div>
                                     <div class="media-body">
-                                        <h6 class="mt-2 user-title">管理员</h6>
-                                        <p class="user-subtitle">admin@admin.com</p>
+                                        <h6 class="mt-2 user-title">{{ request.user.first_name }}</h6>
+                                        <p class="user-subtitle">{{ request.user.email }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -171,7 +182,18 @@
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item"><i class="icon-wallet mr-2"></i> 账户</li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><i class="icon-power mr-2"></i> 退出</li>
+                        {% if user.is_authenticated %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a
+                                    href="{% url 'logout' %}">退出</a></li>
+                            {#                <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="javascript:{document.getElementById('logout').submit()}">退出</a> </li>#}
+                            {#                    <form id = 'logout' action="{% url 'logout' %}" method="post">#}
+                            {#                           {% csrf_token %}#}
+                            {#                        <input type="hidden">#}
+                            {#					</form>#}
+                        {% else %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="{% url 'login' %}">登陆</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>
@@ -188,8 +210,8 @@
                 <div class="col-sm-9">
                     <h4 class="page-title">历史需求</h4>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javaScript:void();">主页导航</a></li>
-                        <li class="breadcrumb-item"><a href="javaScript:void();">需求管理</a></li>
+                        <li class="breadcrumb-item"><a href="javaScript:void(0);">主页导航</a></li>
+                        <li class="breadcrumb-item"><a href="javaScript:void(0);">需求管理</a></li>
                         <li class="breadcrumb-item active" aria-current="page">历史需求</li>
                     </ol>
                 </div>
@@ -209,8 +231,8 @@
                                     <thead>
                                     <tr>
                                         <th>需求编号</th>
-                                        <th>申请时间</th>
                                         <th>项目名称</th>
+                                        <th>申请时间</th>
                                         <th>项目经理</th>
                                         <th>工号</th>
                                         <th>支撑时间</th>
@@ -224,51 +246,23 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td data-toggle="modal" data-target="#formemodal">2020010601</td>
-                                        <td>2020/01/06</td>
-                                        <td>成都项目</td>
-                                        <td>李明</td>
-                                        <td>A010004</td>
-                                        <td>2020/01/01-2020/01/07</td>
-                                        <td>成都</td>
-                                        <td>1</td>
-                                        <td>安服基础 渗透测试 天眼分析</td>
-                                        <td></td>
-                                        <td>张三</td>
-                                        <td>受理</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td data-toggle="modal" data-target="#formemodal">2020010601</td>
-                                        <td>2020/01/06</td>
-                                        <td>长沙项目</td>
-                                        <td>李明</td>
-                                        <td>A010004</td>
-                                        <td>2020/01/01-2020/01/07</td>
-                                        <td>长沙</td>
-                                        <td>3</td>
-                                        <td>渗透测试</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>驳回</td>
-                                        <td>暂无人员分配</td>
-                                    </tr>
-                                    <tr>
-                                        <td data-toggle="modal" data-target="#formemodal">2020010501</td>
-                                        <td>2020/01/05</td>
-                                        <td>北京项目</td>
-                                        <td>李明</td>
-                                        <td>A010004</td>
-                                        <td>2020/01/01-2020/01/07</td>
-                                        <td>长沙</td>
-                                        <td>1</td>
-                                        <td>天眼分析</td>
-                                        <td></td>
-                                        <td>小哥哥</td>
-                                        <td>受理</td>
-                                        <td></td>
-                                    </tr>
+                                    {% for xmsqd in Xmsqds %}
+                                        <tr>
+                                            <td data-toggle="modal" data-target="#formemodal">{{ xmsqd.xqid }}</td>
+                                            <td>{{ xmsqd.xmname }}</td>
+                                            <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>
+                                            <td>{{ xmsqd.xmjl_first_name }}</td>
+                                            <td>{{ xmsqd.xmjl_staff_id }}</td>
+                                            <td>{{ xmsqd.kstime | date:'Y/m/d' }}-{{ xmsqd.jstime | date:'Y/m/d' }}</td>
+                                            <td>{{ xmsqd.xmdiqu }}</td>
+                                            <td>{{ xmsqd.xqry }}</td>
+                                            <td>{{ xmsqd.ryjn }}</td>
+                                            <td>{{ xmsqd.bzxx }}</td>
+                                            <td>{{ xmsqd.fpry }}</td>
+                                            <td>{{ xmsqd.get_zhuangtai_display }}</td>
+                                            <td>{{ xmsqd.clbz }}</td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -349,7 +343,7 @@
 
     </div><!--End content-wrapper-->
     <!--Start Back To Top Button-->
-    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <a href="javaScript:void(0);" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
     <!--End Back To Top Button-->
 
     <!--Start footer-->
@@ -401,41 +395,41 @@
 
 
 <!-- Bootstrap core JavaScript-->
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <!-- simplebar js -->
-<script src="plugins/simplebar/js/simplebar.js"></script>
+<script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>
 <!-- sidebar-menu js -->
-<script src="js/sidebar-menu.js"></script>
+<script src="{% static 'js/sidebar-menu.js' %}"></script>
 
 <!-- Custom scripts -->
-<script src="js/app-script.js"></script>
+<script src="{% static 'js/app-script.js' %}"></script>
 
 <!--Data Tables js-->
-<script src="plugins/bootstrap-datatable/js/jquery.dataTables.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/dataTables.buttons.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/jszip.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/pdfmake.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/vfs_fonts.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.html5.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.print.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.colVis.min.js"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.colVis.min.js' %}"></script>
 
 <!--Bootstrap Touchspin Js-->
-<script src="plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.js"></script>
-<script src="plugins/bootstrap-touchspin/js/bootstrap-touchspin-script.js"></script>
+<script src="{% static 'plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-touchspin/js/bootstrap-touchspin-script.js' %}"></script>
 
 <!--Select Plugins Js-->
-<script src="plugins/select2/js/select2.min.js"></script>
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
 <!--Inputtags Js-->
-<script src="plugins/inputtags/js/bootstrap-tagsinput.js"></script>
+<script src="{% static 'plugins/inputtags/js/bootstrap-tagsinput.js' %}"></script>
 
 <!--Bootstrap Datepicker Js-->
-<script src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
 <!--设置默认排序-->
 <script>
@@ -480,8 +474,8 @@
 </script>
 
 <!--Multi Select Js-->
-<script src="plugins/jquery-multi-select/jquery.multi-select.js"></script>
-<script src="plugins/jquery-multi-select/jquery.quicksearch.js"></script>
+<script src="{% static 'plugins/jquery-multi-select/jquery.multi-select.js' %}"></script>
+<script src="{% static 'plugins/jquery-multi-select/jquery.quicksearch.js' %}"></script>
 
 <script>
     $(document).ready(function () {

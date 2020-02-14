@@ -13,16 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib import admin
+from django.urls import path, include
+
 # + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT) 静态文件处理依赖库
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
-from django.urls import include
 
 from account.urls import *
 from manageradmin.urls import *
+from manager.urls import *
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
+
                   path('admin/', admin.site.urls),
 
                   # 登陆模块路由
@@ -35,6 +39,6 @@ urlpatterns = [
                   path('manageradmin/', include('manageradmin.urls')),
 
                   # 项目经理路由
-                  # path('xmjl/',include('manageradmin.urls')),
+                  path('manager/', include('manager.urls')),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -69,8 +69,14 @@
                 <div class="avatar"><img class="mr-3 side-user-img" src="{% static 'images/avatars/avatar-13.png' %}"
                                          alt="user avatar"></div>
                 <div class="media-body">
-                    <h6 class="side-user-name">{{ request.user }}</h6>
+                    <h6 class="side-user-name">{{ request.user.first_name }}</h6>
                 </div>
+            </div>
+            <div id="user-dropdown" class="collapse">
+                <ul class="user-setting-menu">
+                    <li><a><i class="icon-user"></i> {{ user_group }}</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="icon-power"></i> 退出</a></li>
+                </ul>
             </div>
         </div>
 
@@ -84,7 +90,7 @@
                 </a>
                 <ul class="sidebar-submenu">
                     <li><a href="{% url '管理员突击队模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
-                    <li><a href="{% url '管理员默认页面模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
+                    <li><a href="{% url '管理员项目经理模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
                 </ul>
             </li>
             <li>
@@ -94,9 +100,8 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="admin_staff_demands_add.html"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
-                    <li><a href="admin_staff_demands_history.html"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a>
-                    </li>
+                    <li><a href="{% url '新增需求模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
+                    <li><a href="{% url '历史需求模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a></li>
                 </ul>
             </li>
             <li class="sidebar-header">LABELS</li>
@@ -168,8 +173,8 @@
                                                              src="{% static 'images/avatars/avatar-13.png' %}"
                                                              alt="user avatar"></div>
                                     <div class="media-body">
-                                        <h6 class="mt-2 user-title">{{ request.user }}</h6>
-                                        <p class="user-subtitle">admin@admin.com</p>
+                                        <h6 class="mt-2 user-title">{{ request.user.first_name }}</h6>
+                                        <p class="user-subtitle">{{ request.user.email }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -179,11 +184,12 @@
                         <li class="dropdown-divider"></li>
                         {% if user.is_authenticated %}
                             <li class="dropdown-item"><i class="icon-power mr-2"></i> <a
-                                    href="javascript:{document.getElementById('logout').submit()}">退出</a></li>
-                            <form id='logout' action="{% url 'logout' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden">
-                            </form>
+                                    href="{% url 'logout' %}">退出</a></li>
+                            {#                <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="javascript:{document.getElementById('logout').submit()}">退出</a> </li>#}
+                            {#                    <form id = 'logout' action="{% url 'logout' %}" method="post">#}
+                            {#                           {% csrf_token %}#}
+                            {#                        <input type="hidden">#}
+                            {#					</form>#}
 
                         {% else %}
                             <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="{% url 'login' %}">登陆</a>
@@ -240,37 +246,59 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for tjd_list in tjds %}
+                                    {% for tjd in tjds %}
                                         <tr>
-                                            <input value="{{ tjd_list.id }}" type="hidden"/>
-                                            <td data-toggle="modal" data-target="#formemodal"
-                                                onclick="modify_msg(this,{{ tjd_list.id }})">
-                                                {{ tjd_list.name }}</td>
-                                            <td>{{ tjd_list.staff_id }}</td>
-                                            <td>{{ tjd_list.jineng }}</td>
-                                            <td>{{ tjd_list.ruzhitime }}</td>
-                                            <td>{{ tjd_list.fazhan }}</td>
-                                            <td>{{ tjd_list.diqu }}</td>
-                                            <td>{{ tjd_list.dengji }}</td>
-                                            <td>{{ tjd_list.get_zhuangtai_display }}</td>
+                                            <!--
+                                            <td >
+                                                <a href="" data-toggle="modal" data-target="#formemodal"></a>
+                                            </td>
+                                            <td data-toggle="modal" data-target="#formemodal"></td>
+                                            -->
+                                            {#                        <td>#}
+                                            {#                            <form action="{% url '突击队人员修改' tjd.id %}" method="post" >#}
+                                            {#                                {% csrf_token %}#}
+                                            {#                                <button data-toggle="modal" data-target="#formemodal" type="button">{{ tjd.name }}</button>#}
+                                            {#                            </form>#}
+                                            {#                        </td>#}
+                                            <input value="{{ tjd.id }}" type="hidden"/>
+                                            <td data-toggle="modal" data-target="#formemodal">{{ tjd.name }}</td>
+                                            <td>{{ tjd.staff_id }}</td>
+                                            <td>{{ tjd.jineng }}</td>
+                                            <td>{{ tjd.ruzhitime | date:'Y/m/d' }}</td>
+                                            <td>{{ tjd.fazhan }}</td>
+                                            <td>{{ tjd.diqu }}</td>
+                                            <td>{{ tjd.dengji }}</td>
+                                            <td>{{ tjd.get_zhuangtai_display }}</td>
+                                            {#                        <td>#}
+                                            {#                            <form action="{% url '突击队人员删除' tjd.id %}" method="post" >#}
+                                            {#                                {% csrf_token %}#}
+                                            {#                                <button type="button" class="btn btn-danger  waves-light btn-sm" id="confirm-btn-alert"></button>#}
+                                            {#                            </form>#}
+                                            {#                            <form action="{% url '突击队人员删除' tjd.id %}" method="post" >#}
+                                            {#                                 {% csrf_token %}#}
+                                            {#                            <button type="button"#}
+                                            {#                                class="btn btn-danger  waves-light btn-sm" id="confirm-btn-alert" onclick="alert_del_someb()">#}
+                                            {#                            </button>#}
+                                            {#                            </form>#}
+                                            {#                        </td>#}
                                             <td>
-                                                <button
+                                                <button type="submit"
                                                         class="btn btn-danger waves-effect waves-light btn-sm"
-                                                        onclick="alert_del_someb(this)">del
+                                                        id="confirm-btn-alert" onclick="alert_del_someb(this)">
                                                 </button>
-
                                             </td>
 
                                         </tr>
                                     {% endfor %}
                                     </tbody>
-
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- End Row-->
+            </div>
+
+            <!-- End Row-->
             <div class="col-lg-4">
                 <!-- Large Size Modal -->
 
@@ -281,88 +309,103 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="formemodal">
+
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">修改资料
-                                    <button type="button"
-                                            class="btn-social btn-google-plus waves-effect waves-light m-1"
-                                            id="confirm-btn-alert"><i class="fa fa-trash-o"></i></button>
-                                </h5>
+                                <h5 class="modal-title">修改资料</h5>
 
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
+
                             </div>
                             <div class="modal-body">
-                                <form action="tjd_add" method="post">
-                                    <div class="form-group">
-                                        <label for="input-1">姓名</label>
-                                        <input type="text" class="form-control" name="input-1" placeholder=""
-                                               value="123">
-                                    </div>
+                                <!-- <form name = 'update'  action="" method="post"> -->
 
-                                    <div class="form-group">
-                                        <label for="input-2">工号</label>
-                                        <input type="text" class="form-control" name="input-2" placeholder="">
-                                    </div>
+                                <div class="form-group">
+                                    {% csrf_token %}
+                                    <label for="input-1">姓名 <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" name="name" placeholder="">
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="input-3">人员技能</label>
-                                        <div>
-                                            <select class="form-control multiple-select" multiple="multiple"
-                                                    name="input-3">
-                                                <option>安服基础</option>
-                                                <option>渗透测试</option>
-                                                <option>天眼分析</option>
-                                                <option>其他</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="input-2">工号 <span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" name="staff_id" placeholder="">
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="input-4">发展方向</label>
-                                        <div>
-                                            <select class="form-control single-select" name="input-4">
-                                                <option selected="selected" disabled="disabled" style='display: none'
-                                                        value=''></option>
-                                                <option>安全服务</option>
-                                                <option>项目管理</option>
-                                                <option>渗透测试</option>
-                                                <option>天眼分析</option>
-                                                <option>应急响应</option>
-                                                <option>其他</option>
-                                            </select>
-                                        </div>
+                                <div class="form-group">
+                                    <label for="input-3">人员技能 <span style="color:red">*</span></label>
+                                    <div>
+                                        <select class="form-control multiple-select" multiple="multiple" name="jineng">
+                                            <option>安服基础</option>
+                                            <option>渗透测试</option>
+                                            <option>天眼分析</option>
+                                            <option>其他</option>
+                                        </select>
                                     </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="input-5">所在地</label>
-                                        <input type="text" class="form-control" name="input-5" placeholder="">
+                                <div class="form-group">
+                                    <label>入职时间 <span style="color:red">*</span></label>
+                                    <input type="text" id="autoclose-datepicker" class="form-control"
+                                           data-date-format="yyyy-mm-dd" name="ruzhitime">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-4">发展方向 <span style="color:red">*</span></label>
+                                    <div>
+                                        <select class="form-control single-select" name="fazhan">
+                                            <option selected="selected" disabled="disabled" style='display: none'
+                                                    value=''></option>
+                                            <option>安全服务</option>
+                                            <option>项目管理</option>
+                                            <option>渗透测试</option>
+                                            <option>天眼分析</option>
+                                            <option>应急响应</option>
+                                            <option>其他</option>
+                                        </select>
                                     </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="input-6">等级</label>
-                                        <input type="text" class="form-control" name="input-6" placeholder="">
+                                <div class="form-group">
+                                    <label for="input-5">所在地</label>
+                                    <input type="text" class="form-control" name="diqu" placeholder="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-6">等级</label>
+                                    <input type="text" class="form-control" name="dengji" placeholder="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-7">状态 <span style="color:red">*</span></label>
+                                    <div>
+                                        <select class="form-control single-select" name="zhuangtai">
+                                            <option selected="selected" disabled="disabled" style='display: none'
+                                                    value=''></option>
+                                            <option value='0'>待分配</option>
+                                            <option value='1'>项目中</option>
+                                        </select>
                                     </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
-                                            保存
-                                        </button>
-                                    </div>
-
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i><a
+                                            href="javascript:{document.getElementById('update').submit()}">确认</a>
+                                    </button>
+                                    <input type="hidden">
+                                </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
                 <!--
-<button  class="btn btn-light btn-block m-1" data-toggle="modal" data-target="#formemodal">Modal with form</button>
-添加人员Add data-toggle="modal" data-target="#formemodal"
--->
+                <button  class="btn btn-light btn-block m-1" data-toggle="modal" data-target="#formemodal">Modal with form</button>
+                添加人员Add data-toggle="modal" data-target="#formemodal"
+                -->
                 <!-- Modal -->
                 <div class="modal fade" id="formemodal1">
                     <div class="modal-dialog">
@@ -374,19 +417,17 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form name='addyes' action="{% url '突击队人员添加' %}" method="post">
+                                <form name='add' action="{% url '突击队人员添加' %}" method="post">
+                                    {% csrf_token %}
                                     <div class="form-group">
                                         <label for="input-1">姓名 <span style="color:red">*</span></label>
                                         <input type="text" class="form-control" name="name" placeholder="">
                                     </div>
 
-                                    {% csrf_token %}
                                     <div class="form-group">
                                         <label for="input-2">工号 <span style="color:red">*</span></label>
                                         <input type="text" class="form-control" name="staff_id" placeholder="">
                                     </div>
-
-
                                     <div class="form-group">
                                         <label for="input-3">人员技能 <span style="color:red">*</span></label>
                                         <div>
@@ -445,13 +486,13 @@
                                         </div>
                                     </div>
 
+                                    {#                             <div class="form-group">#}
+                                    {#                             <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i><a href="javascript:{document.getElementById('add').submit()}">确认</a> </button>#}
+                                    {#                                <input type="hidden">#}
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-light" id="addyes"><i
-                                                class="fa fa-check-square-o"></i><a
-                                                href="javascript:{document.getElementById('addyes').click()}">确认</a>
+                                        <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
+                                            确认
                                         </button>
-                                        <input type="hidden">
-
                                     </div>
 
                                 </form>
@@ -656,6 +697,7 @@
 
 
     });
+
 
 </script>
 </body>

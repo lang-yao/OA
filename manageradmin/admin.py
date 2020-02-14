@@ -1,7 +1,5 @@
 from django.contrib import admin
 from .models import Tjd_staff
-
-
 # Register your models here.
 
 @admin.register(Tjd_staff)

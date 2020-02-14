@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,22 +9,24 @@
     <meta name="author" content=""/>
     <title>突击队 - 管理平台</title>
     <!--favicon-->
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
     <!-- simplebar CSS-->
-    <link href="plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
+    <link href="{% static 'plugins/simplebar/css/simplebar.css' %}" rel="stylesheet"/>
     <!-- Bootstrap core CSS-->
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
     <!--Data Tables -->
-    <link href="plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
-    <link href="plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css' %}" rel="stylesheet"
+          type="text/css">
     <!-- animate CSS-->
-    <link href="css/animate.css" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet" type="text/css"/>
     <!-- Icons CSS-->
-    <link href="css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/icons.css' %}" rel="stylesheet" type="text/css"/>
     <!-- Sidebar CSS-->
-    <link href="css/sidebar-menu.css" rel="stylesheet"/>
+    <link href="{% static 'css/sidebar-menu.css' %}" rel="stylesheet"/>
     <!-- Custom Style-->
-    <link href="css/app-style.css" rel="stylesheet"/>
+    <link href="{% static 'css/app-style.css' %}" rel="stylesheet"/>
 
 </head>
 
@@ -44,19 +47,25 @@
     <!--Start sidebar-wrapper-->
     <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
         <div class="brand-logo">
-            <a href="index.html">
-                <img src="images/logo-icon.png" class="logo-icon" alt="logo icon">
+            <a href="{% url '管理员默认页面模块' %}">
+                <img src="{% static 'images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
                 <h5 class="logo-text">突击队管理平台</h5>
             </a>
         </div>
         <div class="user-details">
             <div class="media align-items-center user-pointer collapsed" data-toggle="collapse"
                  data-target="#user-dropdown">
-                <div class="avatar"><img class="mr-3 side-user-img" src="images/avatars/avatar-13.png"
+                <div class="avatar"><img class="mr-3 side-user-img" src="{% static 'images/avatars/avatar-13.png' %}"
                                          alt="user avatar"></div>
                 <div class="media-body">
-                    <h6 class="side-user-name">管理员</h6>
+                    <h6 class="side-user-name">{{ request.user.first_name }}</h6>
                 </div>
+            </div>
+            <div id="user-dropdown" class="collapse">
+                <ul class="user-setting-menu">
+                    <li><a><i class="icon-user"></i> {{ user_group }}</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="icon-power"></i> 退出</a></li>
+                </ul>
             </div>
         </div>
 
@@ -64,33 +73,32 @@
             <li class="sidebar-header">主页导航</li>
 
             <li>
-                <a href="javaScript:void();" class="waves-effect">
+                <a href="javaScript:void(0);" class="waves-effect">
                     <i class="zmdi zmdi-view-dashboard"></i> <span>人员管理</span><i
                         class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="admin_staff_tjd.html"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
-                    <li><a href="admin_staff_xmjl.html"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
+                    <li><a href="{% url '管理员突击队模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 突击队</a></li>
+                    <li><a href="{% url '管理员项目经理模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 项目经理</a></li>
                 </ul>
             </li>
             <li>
-                <a href="javaScript:void();" class="waves-effect">
+                <a href="javaScript:void(0);" class="waves-effect">
                     <i class="zmdi zmdi-card-travel"></i>
                     <span>需求管理</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="admin_staff_demands_add.html"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
-                    <li><a href="admin_staff_demands_history.html"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a>
-                    </li>
+                    <li><a href="{% url '新增需求模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
+                    <li><a href="{% url '历史需求模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a></li>
                 </ul>
             </li>
             <li class="sidebar-header">LABELS</li>
-            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a>
             </li>
-            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-chart-donut text-success"></i>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-chart-donut text-success"></i>
                 <span>Warning</span></a></li>
-            <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a>
+            <li><a href="javaScript:void(0);" class="waves-effect"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a>
             </li>
         </ul>
 
@@ -102,14 +110,14 @@
         <nav class="navbar navbar-expand fixed-top">
             <ul class="navbar-nav mr-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link toggle-menu" href="javascript:void();">
+                    <a class="nav-link toggle-menu" href="javascript:void(0);">
                         <i class="icon-menu menu-icon"></i>
                     </a>
                 </li>
                 <li class="nav-item">
                     <form class="search-bar">
                         <input type="text" class="form-control" placeholder="Enter keywords">
-                        <a href="javascript:void();"><i class="icon-magnifier"></i></a>
+                        <a href="javascript:void(0);"><i class="icon-magnifier"></i></a>
                     </form>
                 </li>
             </ul>
@@ -117,7 +125,7 @@
             <ul class="navbar-nav align-items-center right-nav-link">
                 <li class="nav-item dropdown-lg">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
-                       href="javascript:void();">
+                       href="javascript:void(0);">
                         <i class="fa fa-bell-o"></i><span class="badge badge-info badge-up">14</span></a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <ul class="list-group list-group-flush">
@@ -126,7 +134,7 @@
                                 <span class="badge badge-info">14</span>
                             </li>
                             <li class="list-group-item">
-                                <a href="javaScript:void();">
+                                <a href="javaScript:void(0);">
                                     <div class="media">
                                         <i class="zmdi zmdi-accounts fa-2x mr-3 text-info"></i>
                                         <div class="media-body">
@@ -136,25 +144,26 @@
                                     </div>
                                 </a>
 
-                            <li class="list-group-item text-center"><a href="javaScript:void();">查看所有通知</a></li>
+                            <li class="list-group-item text-center"><a href="javaScript:void(0);">查看所有通知</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
-                        <span class="user-profile"><img src="images/avatars/avatar-13.png" class="img-circle"
-                                                        alt="user avatar"></span>
+                        <span class="user-profile"><img src="{% static 'images/avatars/avatar-13.png' %}"
+                                                        class="img-circle" alt="user avatar"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li class="dropdown-item user-details">
-                            <a href="javaScript:void();">
+                            <a href="javaScript:void(0);">
                                 <div class="media">
                                     <div class="avatar"><img class="align-self-start mr-3"
-                                                             src="images/avatars/avatar-13.png" alt="user avatar"></div>
+                                                             src="{% static 'images/avatars/avatar-13.png' %}"
+                                                             alt="user avatar"></div>
                                     <div class="media-body">
-                                        <h6 class="mt-2 user-title">管理员</h6>
-                                        <p class="user-subtitle">admin@admin.com</p>
+                                        <h6 class="mt-2 user-title">{{ request.user.first_name }}</h6>
+                                        <p class="user-subtitle">{{ request.user.email }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -162,7 +171,19 @@
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item"><i class="icon-wallet mr-2"></i> 账户</li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><i class="icon-power mr-2"></i> 退出</li>
+                        {% if user.is_authenticated %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a
+                                    href="{% url 'logout' %}">退出</a></li>
+                            {#                <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="javascript:{document.getElementById('logout').submit()}">退出</a> </li>#}
+                            {#                    <form id = 'logout' action="{% url 'logout' %}" method="post">#}
+                            {#                           {% csrf_token %}#}
+                            {#                        <input type="hidden">#}
+                            {#					</form>#}
+
+                        {% else %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="{% url 'login' %}">登陆</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>
@@ -179,8 +200,8 @@
                 <div class="col-sm-9">
                     <h4 class="page-title">项目经理</h4>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javaScript:void();">主页导航</a></li>
-                        <li class="breadcrumb-item"><a href="javaScript:void();">人员管理</a></li>
+                        <li class="breadcrumb-item"><a href="javaScript:void(0);">主页导航</a></li>
+                        <li class="breadcrumb-item"><a href="javaScript:void(0);">人员管理</a></li>
                         <li class="breadcrumb-item active" aria-current="page">项目经理</li>
                     </ol>
                 </div>
@@ -188,7 +209,6 @@
 
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-lg-12">
@@ -208,31 +228,34 @@
                                         <th>电话</th>
                                         <th>邮箱</th>
                                         <th>所在地</th>
+                                        <th>del</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td data-toggle="modal" data-target="#formemodal">璐哥</td>
-                                        <td>A000203</td>
-                                        <td>13152109910</td>
-                                        <td>luge@qianxin.com</td>
-                                        <td>北京</td>
-                                    </tr>
-                                    <tr>
-                                        <td data-toggle="modal" data-target="#formemodal">璐哥助理1</td>
-                                        <td>A000204</td>
-                                        <td>13152109910</td>
-                                        <td>luge@qianxin.com</td>
-                                        <td>长沙</td>
-                                    </tr>
-                                    <tr>
-                                        <td data-toggle="modal" data-target="#formemodal">璐哥助理2</td>
-                                        <td>A000205</td>
-                                        <td>13152109910</td>
-                                        <td>luge@qianxin.com</td>
-                                        <td>成都</td>
-                                    </tr>
+                                    {% for xmjl in xmjls %}
+                                        <tr>
+                                            <td data-toggle="modal" data-target="#formemodal">{{ xmjl.first_name }}</td>
+                                            <td>{{ xmjl.staff_id }}</td>
+                                            <td>{{ xmjl.iphone }}</td>
+                                            <td>{{ xmjl.email }}</td>
+                                            <td>{{ xmjl.diqu }}</td>
+                                            <td>
+                                                {#                            <form action="{% url '突击队人员删除' tjd.id %}" method="post" >#}
+                                                {#                                {% csrf_token %}#}
+                                                {#                                <button type="button" class="btn btn-danger  waves-light btn-sm" id="confirm-btn-alert"></button>#}
+                                                {#                            </form>#}
+                                                <form action="" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="button"
+                                                            class="btn btn-danger  waves-light btn-sm"
+                                                            id="confirm-btn-alert" onclick="alert_del_someb()">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -252,11 +275,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">修改资料
-                                    <button type="button"
-                                            class="btn-social btn-google-plus waves-effect waves-light m-1"
-                                            id="confirm-btn-alert"><i class="fa fa-trash-o"></i>
-                                </h5>
+                                <h5 class="modal-title">修改资料 </h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -322,42 +341,50 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form name='add' action="{% url '项目经理人员添加' %}" method="post">
+                                    {% csrf_token %}
                                     <div class="form-group">
-                                        <label for="input-1">姓名</label>
-                                        <input type="text" class="form-control" id="input-1" placeholder="">
+                                        <label for="input-1">用户名 <span style="color:red">*</span></label>
+                                        <input type="text" class="form-control" name="username" placeholder="">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-2">工号</label>
-                                        <input type="text" class="form-control" id="input-2" placeholder="">
+                                        <label for="input-2">姓名 <span style="color:red">*</span></label>
+                                        <input type="text" class="form-control" name="first_name" placeholder="">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-3">电话</label>
-                                        <input type="text" class="form-control" id="input-3" placeholder="">
+                                        <label for="input-3">工号 <span style="color:red">*</span></label></label>
+                                        <input type="text" class="form-control" name="staff_id" placeholder="">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-4">邮箱</label>
-                                        <input type="text" class="form-control" id="input-4" placeholder="">
+                                        <label for="input-4">电话 <span style="color:red">*</span></label></label>
+                                        <input type="text" class="form-control" name="iphone" placeholder="">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-5">密码</label>
-                                        <input type="text" class="form-control" id="input-5" placeholder="">
+                                        <label for="input-5">邮箱 <span style="color:red">*</span></label></label>
+                                        <input type="text" class="form-control" name="email" placeholder="">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-6">所在地</label>
-                                        <input type="text" class="form-control" id="input-6" placeholder="">
+                                        <label for="input-6">密码 <span style="color:red">*</span></label></label>
+                                        <input type="text" class="form-control" name="password" placeholder="">
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="input-7">所在地 <span style="color:red">*</span></label></label>
+                                        <input type="text" class="form-control" name="diqu" placeholder="">
+                                    </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
                                             确认
                                         </button>
+                                    </div>
+                                    <div class="onerror">
+                                        {{ msg }}
                                     </div>
                                 </form>
                             </div>
@@ -372,89 +399,88 @@
     </div>
     <!-- End container-fluid-->
 
-</div><!--End content-wrapper-->
-<!--Start Back To Top Button-->
-<a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
-<!--End Back To Top Button-->
+    <!--Start Back To Top Button-->
+    <a href="javaScript:void(0);" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
 
-<!--Start footer-->
-<footer class="footer">
-    <div class="container">
-        <div class="text-center">
-            Copyright © 2020 突击队管理平台
+    <!--Start footer-->
+    <footer class="footer">
+        <div class="container">
+            <div class="text-center">
+                Copyright © 2020 突击队管理平台
+            </div>
+        </div>
+    </footer>
+    <!--End footer-->
+
+    <!--start color switcher-->
+    <div class="right-sidebar">
+        <div class="switcher-icon">
+            <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+        </div>
+        <div class="right-sidebar-content">
+
+            <p class="mb-0">Gaussion Texture</p>
+            <hr>
+
+            <ul class="switcher">
+                <li id="theme1"></li>
+                <li id="theme2"></li>
+                <li id="theme3"></li>
+                <li id="theme4"></li>
+                <li id="theme5"></li>
+                <li id="theme6"></li>
+            </ul>
+
+            <p class="mb-0">Gradient Background</p>
+            <hr>
+
+            <ul class="switcher">
+                <li id="theme7"></li>
+                <li id="theme8"></li>
+                <li id="theme9"></li>
+                <li id="theme10"></li>
+                <li id="theme11"></li>
+                <li id="theme12"></li>
+            </ul>
+
         </div>
     </div>
-</footer>
-<!--End footer-->
-
-<!--start color switcher-->
-<div class="right-sidebar">
-    <div class="switcher-icon">
-        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
-    </div>
-    <div class="right-sidebar-content">
-
-        <p class="mb-0">Gaussion Texture</p>
-        <hr>
-
-        <ul class="switcher">
-            <li id="theme1"></li>
-            <li id="theme2"></li>
-            <li id="theme3"></li>
-            <li id="theme4"></li>
-            <li id="theme5"></li>
-            <li id="theme6"></li>
-        </ul>
-
-        <p class="mb-0">Gradient Background</p>
-        <hr>
-
-        <ul class="switcher">
-            <li id="theme7"></li>
-            <li id="theme8"></li>
-            <li id="theme9"></li>
-            <li id="theme10"></li>
-            <li id="theme11"></li>
-            <li id="theme12"></li>
-        </ul>
-
-    </div>
-</div>
-<!--end color cwitcher-->
+    <!--end color cwitcher-->
 
 </div><!--End wrapper-->
 
 
 <!-- Bootstrap core JavaScript-->
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <!-- simplebar js -->
-<script src="plugins/simplebar/js/simplebar.js"></script>
+<script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>
 <!-- sidebar-menu js -->
-<script src="js/sidebar-menu.js"></script>
+<script src="{% static 'js/sidebar-menu.js' %}"></script>
 
 <!-- Custom scripts -->
-<script src="js/app-script.js"></script>
+<script src="{% static 'js/app-script.js' %}"></script>
 
 <!--Data Tables js-->
-<script src="plugins/bootstrap-datatable/js/jquery.dataTables.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/dataTables.buttons.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/jszip.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/pdfmake.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/vfs_fonts.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.html5.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.print.min.js"></script>
-<script src="plugins/bootstrap-datatable/js/buttons.colVis.min.js"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datatable/js/buttons.colVis.min.js' %}"></script>
 <!--Multi Select Js-->
-<script src="plugins/jquery-multi-select/jquery.multi-select.js"></script>
-<script src="plugins/jquery-multi-select/jquery.quicksearch.js"></script>
+<script src="{% static 'plugins/jquery-multi-select/jquery.multi-select.js' %}"></script>
+<script src="{% static 'plugins/jquery-multi-select/jquery.quicksearch.js' %}"></script>
 <!--Sweet Alerts -->
-<script src="plugins/alerts-boxes/js/sweetalert.min.js"></script>
-<script src="plugins/alerts-boxes/js/sweet-alert-script.js"></script>
+<script src="{% static 'plugins/alerts-boxes/js/sweetalert.min.js' %}"></script>
+<script src="{% static 'plugins/alerts-boxes/js/sweet-alert-script.js' %}"></script>
 
 <script>
     $(document).ready(function () {

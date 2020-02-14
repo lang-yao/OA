@@ -55,7 +55,7 @@
     <!--Start sidebar-wrapper-->
     <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
         <div class="brand-logo">
-            <a href="index.html">
+            <a href="{% url '项目经理默认页面模块' %}">
                 <img src="{% static 'images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
                 <h5 class="logo-text">突击队管理平台</h5>
             </a>
@@ -66,8 +66,14 @@
                 <div class="avatar"><img class="mr-3 side-user-img" src="{% static 'images/avatars/avatar-13.png' %}"
                                          alt="user avatar"></div>
                 <div class="media-body">
-                    <h6 class="side-user-name">项目管理员</h6>
+                    <h6 class="side-user-name">{{ request.user.first_name }}</h6>
                 </div>
+            </div>
+            <div id="user-dropdown" class="collapse">
+                <ul class="user-setting-menu">
+                    <li><a><i class="icon-user"></i> {{ user_group }}</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="icon-power"></i> 退出</a></li>
+                </ul>
             </div>
         </div>
 
@@ -79,9 +85,8 @@
                         class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="xmjl_staff_demands_add.html"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
-                    <li><a href="xmjl_staff_demands_history.html"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a>
-                    </li>
+                    <li><a href="{% url '项目经理需求增加模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 新增需求</a></li>
+                    <li><a href="{% url '项目经理需求历史模块' %}"><i class="zmdi zmdi-long-arrow-right"></i> 历史需求</a></li>
                 </ul>
             </li>
 
@@ -155,8 +160,8 @@
                                                              src="{% static 'images/avatars/avatar-13.png' %}"
                                                              alt="user avatar"></div>
                                     <div class="media-body">
-                                        <h6 class="mt-2 user-title">项目管理员</h6>
-                                        <p class="user-subtitle">admin@admin.com</p>
+                                        <h6 class="mt-2 user-title">{{ request.user.first_name }}</h6>
+                                        <p class="user-subtitle">{{ request.user.email }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -164,7 +169,18 @@
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item"><i class="icon-wallet mr-2"></i> 账户</li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><i class="icon-power mr-2"></i> 退出</li>
+                        {% if user.is_authenticated %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a
+                                    href="{% url 'logout' %}">退出</a></li>
+                            {#                <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="javascript:{document.getElementById('logout').submit()}">退出</a> </li>#}
+                            {#                    <form id = 'logout' action="{% url 'logout' %}" method="post">#}
+                            {#                           {% csrf_token %}#}
+                            {#                        <input type="hidden">#}
+                            {#					</form>#}
+                        {% else %}
+                            <li class="dropdown-item"><i class="icon-power mr-2"></i> <a href="{% url 'login' %}">登陆</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>
@@ -198,27 +214,40 @@
                         <div class="card-body">
                             <div class="card-title">人员申请</div>
                             <hr>
-                            <form>
+                            <form action="{% url '项目经理需求增加模块' %}" method="post">
                                 <div class="form-group row">
-                                    <label for="input-21" class="col-sm-2 col-form-label">项目名称</label>
+                                    {% csrf_token %}
+                                    <label for="input-21" class="col-sm-2 col-form-label">项目名称 <span
+                                            style="color:red">*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="input-21" placeholder="">
+                                        <input type="text" class="form-control" id="input-21" placeholder="填写需要支撑的项目名称"
+                                               name="xmname">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="input-21" class="col-sm-2 col-form-label">项目编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input-21"
+                                               placeholder="填写需要支撑的项目编号若未立项可不填" name="xqid">
                                     </div>
                                 </div>
 
 
                                 <div class="form-group row">
-                                    <label for="input-22" class="col-sm-2 col-form-label">需求地区</label>
+                                    <label for="input-22" class="col-sm-2 col-form-label">需求地区 <span
+                                            style="color:red">*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="input-22" placeholder="">
+                                        <input type="text" class="form-control" id="input-22" placeholder="填写需要支撑的项目地区"
+                                               name=xmdiqu>
                                     </div>
                                 </div>
 
 
                                 <div class="form-group row">
-                                    <label for="input-23" class="col-sm-2 col-form-label">所需人数</label>
+                                    <label for="input-23" class="col-sm-2 col-form-label">所需人数 <span
+                                            style="color:red">*</span></label>
                                     <div class="col-sm-10">
-                                        <select class="form-control single-select">
+                                        <select class="form-control single-select" name="xqry">
                                             <option selected="selected" disabled="disabled" style='display: none'
                                                     value=''></option>
                                             <option>1</option>
@@ -236,9 +265,10 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="input-24" class="col-sm-2 col-form-label">人员技能</label>
+                                    <label for="input-24" class="col-sm-2 col-form-label">人员技能 <span
+                                            style="color:red">*</span></label>
                                     <div class="col-sm-10">
-                                        <select class="form-control multiple-select" multiple="multiple">
+                                        <select class="form-control multiple-select" multiple="multiple" name="ryjn">
                                             <option>安服基础</option>
                                             <option>渗透测试</option>
                                             <option>天眼分析</option>
@@ -247,15 +277,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="input-25" class="col-sm-2 col-form-label">开始时间 - 结束时间</label>
+                                    <label for="input-25" class="col-sm-2 col-form-label">支撑时间 <span
+                                            style="color:red">*</span></label>
                                     <div class="col-sm-10">
                                         <div id="dateragne-picker">
-                                            <div class="input-daterange input-group " data-date-format="yyyy/mm/dd">
-                                                <input type="text" class="form-control" name="start"/>
+                                            <div class="input-daterange input-group " data-date-format="yyyy-mm-dd">
+                                                <input type="text" class="form-control" name="kstime"/>
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">To</span>
                                                 </div>
-                                                <input type="text" class="form-control" name="end"/>
+                                                <input type="text" class="form-control" name="jstime"/>
                                             </div>
                                         </div>
                                     </div>
@@ -264,7 +295,8 @@
                                 <div class="form-group row">
                                     <label for="input-26" class="col-sm-2 col-form-label">其它备注</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="input-26" placeholder="">
+                                        <input type="text" class="form-control" id="input-26" placeholder="填写需要注意的其他事项"
+                                               name="bzxx">
                                     </div>
                                 </div>
 

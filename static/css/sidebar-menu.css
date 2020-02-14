@@ -3,15 +3,12 @@
     position: relative;
     transition: all 0.3s ease;
 }
-
 .animate-menu-push.animate-menu-push-right {
     left: 200px;
 }
-
 .animate-menu-push.animate-menu-push-left {
     left: -200px;
 }
-
 .animate-menu {
     position: fixed;
     top: 0;
@@ -19,19 +16,15 @@
     height: 100%;
     transition: all 0.3s ease;
 }
-
 .animate-menu-left {
     left: -200px;
 }
-
 .animate-menu-left.animate-menu-open {
     left: 0;
 }
-
 .animate-menu-right {
     right: -200px;
 }
-
 .animate-menu-right.animate-menu-open {
     right: 0;
 }
@@ -98,7 +91,6 @@
     color: #b8c7ce;
     text-decoration: none;
 }
-
 .sidebar-menu .sidebar-submenu {
     display: none;
     list-style: none;
@@ -193,7 +185,6 @@
     color: #b8c7ce;
     text-decoration: none;
 }
-
 .sidebar-menu-rtl .sidebar-submenu {
     display: none;
     list-style: none;

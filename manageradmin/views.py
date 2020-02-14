@@ -1,15 +1,15 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Tjd_staff
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import permission_required
-from account.models import User
 from django.contrib.auth.models import Group, ContentType, Permission
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+
+from account.models import User
+from .models import Tjd_staff
+
 
 # Create your views here.
 # 访问限制模块 @login_required
-from django.contrib.auth.decorators import login_required
 
 
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
@@ -265,9 +265,6 @@ def admin_user_add(request):
     #     return redirect('管理员项目经理模块')
 
 
-from manager.models import Xmsqd
-
-
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
                       'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
                       'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
@@ -377,6 +374,7 @@ def manager_user_update(request):
 
 
 from manager.models import Xmsqd
+from collections import defaultdict
 
 
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
@@ -386,9 +384,38 @@ from manager.models import Xmsqd
 def admin_xqadd(request):
     '''管理员项目总需求列表，获取待处理的订单'''
     Xmsqds = Xmsqd.objects.filter(zhuangtai='0')
-    # Xmsqds = Xmsqd.objects.all()
-    context = {}
-    context['Xmsqds'] = Xmsqds
+
+    '''获取未分配的人员地区进行去重'''
+    diqus = Tjd_staff.objects.filter(zhuangtai='0').values('diqu').distinct()
+
+    dfpry = defaultdict(list)
+    '''获取未分配的地区及人员'''
+    for i in diqus:
+        # print(i['diqu'],'-'*20)
+        dfpry[i['diqu']]
+        dqry = Tjd_staff.objects.filter(zhuangtai='0').filter(**i)
+        for name in dqry:
+            dfpry[i['diqu']].append(name.name + '-' + name.staff_id)
+            # print(name.name)
+    dfpry = dict(dfpry)
+    # print(dfpry)
+    context = {
+        'Xmsqds': Xmsqds,
+        'diqus': diqus,
+        'dfpry': dfpry,
+    }
+    # print(context['dfpry'])
+
+    # for k, v in dfpry.items():
+    #     print(k)
+    #     for i in v:
+    #         print(i)
+    # context = {
+    #     'Xmsqds': Xmsqds,
+    #     'diqus': diqus,
+    # }
+
+    # print(context)
     return render(request, 'admin_staff_demands_add.html', context)
 
 
@@ -402,8 +429,6 @@ def admin_xqaddhistory(request):
     context['Xmsqds'] = Xmsqds
     return render(request, 'admin_staff_demands_history.html', context)
 
-
-from django.conf import settings
 
 email = 'liuhao07@qianxin.com'
 code = '123'
@@ -445,3 +470,13 @@ def xmcl_email(request):
     # msg.attach_alternative(html_content, "text/html")
     # msg.send()
     return HttpResponse('发送了')
+
+
+def admin_xqaddcl(request):
+    zhuangtai = request.POST['zhuangtai']
+    renyuanlist = request.POST.getlist('renyuanlist')
+    xqd_id = request.POST.get("")
+    print(renyuanlist)
+    clbz = request.POST['clbz']
+    print(zhuangtai, clbz)
+    return redirect('新增需求模块')

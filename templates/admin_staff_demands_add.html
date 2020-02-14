@@ -284,58 +284,80 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form action="{% url '新增需求处理模块' %}" method="post">
+                                    {% csrf_token %}
                                     <div class="form-group">
                                         <label for="input-3">处理状态</label>
                                         <div>
-                                            <select class="form-control single-select">
+                                            <select class="form-control single-select" name="zhuangtai">
                                                 <option selected="selected" disabled="disabled" style='display: none'
                                                         value=''></option>
-                                                <option>受理</option>
-                                                <option>驳回</option>
+                                                <option value='1'>受理</option>
+                                                <option value='2'>驳回</option>
                                             </select>
                                         </div>
                                     </div>
 
 
-                                    <div class="form-group">
-                                        <label for="input-4">地区 <span style="color:red">*</span></label>
+                                    <label for="input-5">地区/人员</label>
+                                    <div>
+                                        <form>
+                                            <div class="form-group">
+                                                <select multiple="multiple" class="multi-select" id="my_multi_select2"
+                                                        name="renyuanlist">
+                                                    {% for k ,v in dfpry.items %}
+                                                        {#                                        <option value={{ k }}>{{ k }}</option>#}
+                                                        <optgroup label={{ k }}>
+                                                            {% for i in v %}
+                                                                <option>{{ i }}</option>
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </form>
                                         <div>
-                                            <select class="form-control single-select" name="fazhan">
-                                                <option selected="selected" disabled="disabled" style='display: none'
-                                                        value=''></option>
-                                                {% for diqu in diqus %}
-                                                    <option>{{ diqu.diqu }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
 
 
-                                    <div class="form-group">
-                                        <label for="input-2">人员</label>
-                                        <div>
-                                            <select class="form-control multiple-select" multiple="multiple">
-                                                <option>张三 - A001213</option>
-                                                <option>李四</option>
-                                                <option>王五</option>
-                                                <option>小李</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                            {#                            <div class="form-group">#}
+                                            {#                               <label for="input-4">地区  <span style="color:red">*</span></label>#}
+                                            {#                               <div>#}
+                                            {#								<select class="form-control single-select" name = "">#}
+                                            {#								<option selected="selected" disabled="disabled"  style='display: none' value=''></option>#}
+                                            {#                                    {% for diqu in diqus %}#}
+                                            {#                                    <option>{{ diqu.diqu }}</option>#}
+                                            {#                                    {% endfor %}#}
+                                            {#							    </select>#}
+                                            {#							  </div>#}
+                                            {#                            </div>#}
+                                            {##}
+                                            {##}
+                                            {##}
+                                            {#						  <div class="form-group">#}
+                                            {#							<label for="input-2">人员</label>#}
+                                            {#							<div>#}
+                                            {#							  <select class="form-control multiple-select" multiple="multiple">#}
+                                            {#							  <option>张三 - A001213</option>#}
+                                            {#							  <option>李四</option>#}
+                                            {#							  <option>王五</option>#}
+                                            {#							  <option>小李</option>#}
+                                            {#							  </select>#}
+                                            {#							</div>#}
+                                            {#						  </div>#}
 
 
-                                    <div class="form-group">
-                                        <label for="input-4">处理备注</label>
-                                        <input type="text" class="form-control" id="input-4" placeholder="">
-                                    </div>
+                                            <div class="form-group">
+                                                <label for="input-4">处理备注</label>
+                                                <input type="text" class="form-control" id="input-4" placeholder=""
+                                                       name="clbz">
+                                            </div>
 
 
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
-                                            确认
-                                        </button>
-                                    </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-light"><i
+                                                        class="fa fa-check-square-o"></i> 确认
+                                                </button>
+                                            </div>
                                 </form>
                             </div>
                         </div>

@@ -9,7 +9,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path('admin_index/', views.tjd_index, name='管理员默认页面模块'),
     path('tjd_list/', views.tjd_list, name='管理员突击队模块'),
@@ -23,6 +22,7 @@ urlpatterns = [
     path('admin_xqaddhistory/', views.admin_xqaddhistory, name='历史需求模块'),
 
     path('send_email/', views.xmcl_email, name='邮件模块'),
+    path('admin_xqaddcl/', views.admin_xqaddcl, name='新增需求处理模块'),
 
     # path('admingroup/',views.admin_group,name ='添加管理组'),
     # path('xmgroup/',views.xm_group,name ='添加项目组'),

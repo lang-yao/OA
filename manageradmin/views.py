@@ -79,16 +79,41 @@ def tjd_add(request):
         return redirect('管理员突击队模块')
 
 
+# @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
+#                       'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
+#                       'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
+#                      raise_exception=True)
+def tjd_del(id):
+    '''突击队人员删除'''
+    # id = request.POST['id']
+    tjd_renyuan = Tjd_staff.objects.get(id=id)
+    tjd_renyuan.delete()
+    # return redirect('管理员突击队模块')
+
+
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
                       'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
                       'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
                      raise_exception=True)
-def tjd_del(request):
-    '''突击队人员删除'''
-    id = request.POST['id']
-    tjd_renyuan = Tjd_staff.objects.get(id=id)
-    tjd_renyuan.delete()
-    return redirect('管理员突击队模块')
+def staff_del(request):
+    choice = int(request.POST.get('choice'))
+    origin = request.META.get('HTTP_DEL_PATH')
+    id = request.POST.get('id')
+    print(id, choice, (choice & 1))
+    if origin.split('/')[2] == 'tjd_list':
+        if choice & 1:
+            print('突击队人员')
+            # choice为奇，表示为突击队人员删除
+            tjd_del(id)
+            return redirect('管理员突击队模块')
+    elif origin.split('/')[2] == 'manager_user_list':
+        if not choice & 1:
+            # choice为偶，表示为项目经理删除
+            print('项目经理')
+            manager_user_del(id)
+            return redirect('管理员项目经理模块')
+    else:
+        return HttpResponse(request, 'wrong')
 
 
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
@@ -355,18 +380,18 @@ def manager_user_add(request):
     # return HttpResponse('创建用户啦')
 
 
-@permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
-                      'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
-                      'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
-                     raise_exception=True)
-def manager_user_del(request):
+# @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
+#                       'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
+#                       'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
+#                      raise_exception=True)
+def manager_user_del(id):
     '''项目经理人员删除'''
     # id = 4
-    id = request.POST['id']
+    # id = request.POST['id']
     xmjl_renyuan = User.objects.get(id=id)
     xmjl_renyuan.user_permissions.clear()  # 清除权限
     xmjl_renyuan.delete()
-    return redirect('管理员项目经理模块')
+    # return redirect('管理员项目经理模块')
 
 
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',

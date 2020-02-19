@@ -2,10 +2,11 @@
 function person_del(self) {
     var csrfcookies = $.cookie('csrftoken');
     var path = window.location.pathname.split('/');
+    var choice = (new Date()).valueOf();
     if (path[2] == 'tjd_list') {
-        path = '/' + path[1] + '/tjd_del/';
+        choice = choice | 1;
     } else {
-        path = '/' + path[1] + '/manager_user_del/';
+        choice = choice << 1;
     }
     var self_id = self.parentElement.parentElement.children[0].value;
     swal({
@@ -18,10 +19,14 @@ function person_del(self) {
         if (willDelete) {
             $.ajax({
                 type: "post",
-                url: path,
-                headers: {'X-CSRFtoken': csrfcookies},
+                url: '/manageradmin/del/',
+                headers: {
+                    'X-CSRFtoken': csrfcookies,
+                    'del-path': window.location.pathname,
+                },
                 data: {
                     "id": self_id,
+                    'choice': choice,
                 },
                 success: function (data, status) {
                     if (status == 'success') {

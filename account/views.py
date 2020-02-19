@@ -58,5 +58,6 @@ def user_logout(request):
     return redirect('login')
 
 
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives

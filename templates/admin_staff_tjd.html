@@ -269,25 +269,12 @@
                                             <td>{{ tjd.diqu }}</td>
                                             <td>{{ tjd.dengji }}</td>
                                             <td>{{ tjd.get_zhuangtai_display }}</td>
-                                            {#                        <td>#}
-                                            {#                            <form action="{% url '突击队人员删除' tjd.id %}" method="post" >#}
-                                            {#                                {% csrf_token %}#}
-                                            {#                                <button type="button" class="btn btn-danger  waves-light btn-sm" id="confirm-btn-alert"></button>#}
-                                            {#                            </form>#}
-                                            {#                            <form action="{% url '突击队人员删除' tjd.id %}" method="post" >#}
-                                            {#                                 {% csrf_token %}#}
-                                            {#                            <button type="button"#}
-                                            {#                                class="btn btn-danger  waves-light btn-sm" id="confirm-btn-alert" onclick="alert_del_someb()">#}
-                                            {#                            </button>#}
-                                            {#                            </form>#}
-                                            {#                        </td>#}
                                             <td>
                                                 <button type="submit"
                                                         class="btn btn-danger waves-effect waves-light btn-sm"
-                                                        id="confirm-btn-alert" onclick="alert_del_someb(this)">
+                                                        id="confirm-btn-alert" onclick="person_del(this)">
                                                 </button>
                                             </td>
-
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -600,6 +587,7 @@
 <!--Sweet Alerts -->
 <script src="{% static 'plugins/alerts-boxes/js/sweetalert.min.js' %}"></script>
 <script src="{% static 'plugins/alerts-boxes/js/sweet-alert-script.js' %}"></script>
+<script src="{% static 'js/del_msg.js' %}"></script>
 <script>
     $(document).ready(function () {
         //Default data table

@@ -1,4 +1,5 @@
 {% load static %}
+{% load myjoin %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,14 +252,14 @@
                                             <td data-toggle="modal" data-target="#formemodal">{{ xmsqd.xqid }}</td>
                                             <td>{{ xmsqd.xmname }}</td>
                                             <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>
-                                            <td>{{ xmsqd.xmjl_first_name }}</td>
-                                            <td>{{ xmsqd.xmjl_staff_id }}</td>
+                                            <td>{{ xmsqd.xmjl__first_name }}</td>
+                                            <td>{{ xmsqd.xmjl__staff_id }}</td>
                                             <td>{{ xmsqd.kstime | date:'Y/m/d' }}-{{ xmsqd.jstime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.xmdiqu }}</td>
                                             <td>{{ xmsqd.xqry }}</td>
                                             <td>{{ xmsqd.ryjn }}</td>
                                             <td>{{ xmsqd.bzxx }}</td>
-                                            <td>{{ xmsqd.fpry }}</td>
+                                            <td>{{ xmsqd.fpry.all | join:'，' }}</td>
                                             <td>{{ xmsqd.get_zhuangtai_display }}</td>
                                             <td>{{ xmsqd.clbz }}</td>
                                         </tr>

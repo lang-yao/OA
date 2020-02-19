@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -69,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'account.context_processors.front_user',
             ],
         },
     },
@@ -87,7 +89,6 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '123123',
         'PORT': '3306',
-        'OPTIONS': {'isolation_level': None},
     }
 }
 
@@ -109,6 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# 重构user模型
+AUTH_USER_MODEL = 'account.User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -122,6 +126,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+# 邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '1219155@qq.com'
+EMAIL_HOST_PASSWORD = 'prlevniagpcdbgbi'
+
+# 注册有效期天数
+CONFIRM_DAYS = 7
+# session
+SESSION_COOKIE_AGE = 86400
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -130,5 +146,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
-
-AUTH_USER_MODEL = 'account.User'

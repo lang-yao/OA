@@ -12,13 +12,14 @@ from django.contrib.auth.decorators import login_required, permission_required
 def manager_index(request):
     '''项目经理申请单计算'''
     xmjl_staff_id = request.user.staff_id
-    xmsqds = Xmsqd.objects.filter(xmjl_staff_id=xmjl_staff_id).count()
-    xmsqds0 = Xmsqd.objects.filter(xmjl_staff_id=xmjl_staff_id).filter(zhuangtai='0').count()
-    xmsqds1 = Xmsqd.objects.filter(xmjl_staff_id=xmjl_staff_id).filter(zhuangtai='1').count()
+    xmsqds = User.objects.get(staff_id=xmjl_staff_id).xmsqd_set.all().count()
+    xmsqds0 = User.objects.get(staff_id=xmjl_staff_id).xmsqd_set.filter(zhuangtai='0').count()
+    xmsqds1 = User.objects.get(staff_id=xmjl_staff_id).xmsqd_set.filter(zhuangtai='1').count()
     return render(request, 'xmjl_index.html', {'data': xmsqds, 'data0': xmsqds0, 'data1': xmsqds1})
 
 
 from .models import Xmsqd
+from account.models import User
 
 
 @permission_required('manager.add_xmsqd', login_url='login', raise_exception=True)
@@ -30,6 +31,7 @@ def manager_xqadd(request):
         xmdiqu = request.POST['xmdiqu']
         xqry = request.POST['xqry']
         ryjn = request.POST.getlist('ryjn')
+        ryjn = (",".join(str(i) for i in ryjn))
         bzxx = request.POST['bzxx']
         kstime = request.POST['kstime']
         jstime = request.POST['jstime']
@@ -37,10 +39,6 @@ def manager_xqadd(request):
         # print(xmname,xmdiqu,xqry,ryjn,bzxx,kstime,jstime)
         userid = request.session.get('_auth_user_id')
         '''获取项目组用户名称及工号'''
-        xmjl_first_name = request.user.first_name
-        xmjl_staff_id = request.user.staff_id
-        xmsqd.xmjl_first_name = xmjl_first_name
-        xmsqd.xmjl_staff_id = xmjl_staff_id
         xmsqd.xmname = xmname
         xmsqd.xqid = xqid
         xmsqd.xmdiqu = xmdiqu
@@ -49,6 +47,7 @@ def manager_xqadd(request):
         xmsqd.bzxx = bzxx
         xmsqd.kstime = kstime
         xmsqd.jstime = jstime
+        xmsqd.xmjl_id = userid
         xmsqd.save()
         return redirect('项目经理需求增加模块')
     else:

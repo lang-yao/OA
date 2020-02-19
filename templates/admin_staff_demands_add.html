@@ -244,13 +244,16 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     {% for xmsqd in Xmsqds %}
                                         <tr>
-                                            <td data-toggle="modal" data-target="#formemodal">{{ xmsqd.xqid }}</td>
+                                            <input value="{{ xmsqd.id }}" type="hidden"/>
+                                            <td data-toggle="modal" data-target="#formemodal"
+                                                onclick="add_input_id(this)">{{ xmsqd.xqid }}</td>
                                             <td>{{ xmsqd.xmname }}</td>
                                             <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>
-                                            <td>{{ xmsqd.xmjl_first_name }}</td>
-                                            <td>{{ xmsqd.xmjl_staff_id }}</td>
+                                            <td>{{ xmsqd.xmjl__first_name }}</td>
+                                            <td>{{ xmsqd.xmjl__staff_id }}</td>
                                             <td>{{ xmsqd.kstime | date:'Y/m/d' }}-{{ xmsqd.jstime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.xmdiqu }}</td>
                                             <td>{{ xmsqd.xqry }}</td>
@@ -259,6 +262,17 @@
                                         </tr>
                                     {% endfor %}
                                     </tbody>
+                                    <script>
+                                        function add_input_id(self) {
+                                            ele_id = self.previousElementSibling.value;
+                                            ele = document.createElement('input');
+                                            ele.setAttribute('value', ele_id);
+                                            ele.setAttribute('type', 'hidden');
+                                            ele.setAttribute('name', 'id');
+                                            par = document.getElementsByClassName('modal-body')[0].firstElementChild;
+                                            par.append(ele);
+                                        }
+                                    </script>
                                 </table>
                             </div>
                         </div>
@@ -306,7 +320,6 @@
                                                 <select multiple="multiple" class="multi-select" id="my_multi_select2"
                                                         name="renyuanlist">
                                                     {% for k ,v in dfpry.items %}
-                                                        {#                                        <option value={{ k }}>{{ k }}</option>#}
                                                         <optgroup label={{ k }}>
                                                             {% for i in v %}
                                                                 <option>{{ i }}</option>
@@ -358,6 +371,8 @@
                                                         class="fa fa-check-square-o"></i> 确认
                                                 </button>
                                             </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>

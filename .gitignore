@@ -140,4 +140,4 @@ dmypy.json
 
 #OA/
 #manage.py
-#templates/
+#templatetags/

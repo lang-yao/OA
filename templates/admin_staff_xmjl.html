@@ -234,6 +234,7 @@
                                     <tbody>
                                     {% for xmjl in xmjls %}
                                         <tr>
+                                            <input value="{{ xmjl.id }}" type="hidden"/>
                                             <td data-toggle="modal" data-target="#formemodal">{{ xmjl.first_name }}</td>
                                             <td>{{ xmjl.staff_id }}</td>
                                             <td>{{ xmjl.iphone }}</td>
@@ -244,13 +245,13 @@
                                                 {#                                {% csrf_token %}#}
                                                 {#                                <button type="button" class="btn btn-danger  waves-light btn-sm" id="confirm-btn-alert"></button>#}
                                                 {#                            </form>#}
-                                                <form action="" method="post">
-                                                    {% csrf_token %}
-                                                    <button type="button"
-                                                            class="btn btn-danger  waves-light btn-sm"
-                                                            id="confirm-btn-alert" onclick="alert_del_someb()">
-                                                    </button>
-                                                </form>
+                                                {#                                                <form action="" method="post">#}
+                                                {#                                                    {% csrf_token %}#}
+                                                <button type="button"
+                                                        class="btn btn-danger  waves-light btn-sm"
+                                                        id="confirm-btn-alert" onclick="person_del(this)">DEL
+                                                </button>
+                                                {#                                                </form>#}
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -455,7 +456,7 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
 <!-- simplebar js -->
 <script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>
 <!-- sidebar-menu js -->
@@ -481,7 +482,7 @@
 <!--Sweet Alerts -->
 <script src="{% static 'plugins/alerts-boxes/js/sweetalert.min.js' %}"></script>
 <script src="{% static 'plugins/alerts-boxes/js/sweet-alert-script.js' %}"></script>
-
+<script src="{% static 'js/del_msg.js' %}"></script>
 <script>
     $(document).ready(function () {
         //Default data table

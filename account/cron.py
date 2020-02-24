@@ -10,7 +10,6 @@ from manager.models import Xmsqd
 from manageradmin.models import Tjd_staff
 import time
 
-
 def renwu():
     dqtime = time.strftime("%Y-%m-%d", time.localtime(time.time()))
     xms = Xmsqd.objects.filter(zhuangtai='1').all()

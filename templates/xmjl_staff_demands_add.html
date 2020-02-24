@@ -214,7 +214,7 @@
                         <div class="card-body">
                             <div class="card-title">人员申请</div>
                             <hr>
-                            <form action="{% url '项目经理需求增加模块' %}" method="post">
+                            <form action="{% url '项目经理需求增加模块' %}" method="post" id="add">
                                 <div class="form-group row">
                                     {% csrf_token %}
                                     <label for="input-21" class="col-sm-2 col-form-label">项目名称 <span
@@ -225,9 +225,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="input-21" class="col-sm-2 col-form-label">项目编号</label>
+                                    <label for="input-27" class="col-sm-2 col-form-label">项目编号</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="input-21"
+                                        <input type="text" class="form-control" id="input-27"
                                                placeholder="填写需要支撑的项目编号若未立项可不填" name="xqid">
                                     </div>
                                 </div>
@@ -305,22 +305,32 @@
                                     <label class="col-sm-2 col-form-label"></label>
 
                                     <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-white px-5" onclick="alert_success()"><i
-                                                class="fa fa-check-square-o"></i> 确认
+                                        <button type="button" class="btn btn-white px-5" onclick="submit_add_demand()">
+                                            <i class="fa fa-check-square-o"></i> 确认
                                         </button>
                                     </div>
-                                    <script>
-                                        function alert_success() {
-                                            swal({
-                                                title: "添加成功!",
-                                                icon: "success",
-                                            }).then((clc) => {
-                                                window.location.href = "/manager/manager_xqadd/"
-                                            });
-                                        }
-                                    </script>
                                 </div>
                             </form>
+                            <script>
+                                function submit_add_demand() {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/manager/manager_xqadd/",
+                                        data: $('#add').serialize(),// 序列化表单值
+                                        async: false,
+                                        success: function (data) {
+                                            if (data['status'] == 'success') {
+                                                swal({
+                                                    title: "添加成功!",
+                                                    icon: "success",
+                                                }).then((clc) => {
+                                                    window.location.href = "/manager/manager_xqadd/"
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            </script>
                         </div>
                     </div>
 
@@ -388,8 +398,6 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'plugins/alerts-boxes/js/sweetalert.min.js' %}"></script>
-<script src="{% static 'plugins/alerts-boxes/js/sweet-alert-script.js' %}"></script>
 
 <!-- simplebar js -->
 <script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>
@@ -430,7 +438,9 @@
 <!--Multi Select Js-->
 <script src="{% static 'plugins/jquery-multi-select/jquery.multi-select.js' %}"></script>
 <script src="{% static 'plugins/jquery-multi-select/jquery.quicksearch.js' %}"></script>
-
+<!--Sweet Alerts -->
+<script src="{% static 'plugins/alerts-boxes/js/sweetalert.min.js' %}"></script>
+<script src="{% static 'plugins/alerts-boxes/js/sweet-alert-script.js' %}"></script>
 <script>
     $(document).ready(function () {
         $('.single-select').select2();

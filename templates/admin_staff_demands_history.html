@@ -248,10 +248,15 @@
                                     </thead>
                                     <tbody>
                                     {% for xmsqd in Xmsqds %}
+
                                         <tr>
                                             <input value="{{ xmsqd.id }}" type="hidden"/>
-                                            <td data-toggle="modal" data-target="#formemodal"
-                                                onclick="add_input_id(this)">{{ xmsqd.xqid }}</td>
+                                            {% if xmsqd.zhuangtai == 1 %}
+                                                <td data-toggle="modal" data-target="#formemodal"
+                                                    onclick="add_input_id(this)">{{ xmsqd.xqid }}</td>
+                                            {% else %}
+                                                <td> {{ xmsqd.xqid }}</td>
+                                            {% endif %}
                                             <td>{{ xmsqd.xmname }}</td>
                                             <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.xmjl.first_name }}</td>
@@ -280,9 +285,9 @@
 
                                         function xuqiu_his_hidden(hid_id) {
                                             var lab_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[2];
-                                            if (hid_id == '1') {
+                                            if (hid_id == '3') {
                                                 lab_diqu.style.display = 'none';
-                                            } else if (hid_id == '2') {
+                                            } else if (hid_id == '1') {
                                                 lab_diqu.style.display = 'block';
                                             }
                                         }

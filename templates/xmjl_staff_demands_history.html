@@ -233,7 +233,12 @@
                                     <tbody>
                                     {% for xmsqd in Xmsqds %}
                                         <tr>
-                                            <td data-toggle="modal" data-target="#formemodal">{{ xmsqd.xqid }}</td>
+                                            {% if xmsqd.zhuangtai == 3 %}
+                                                <td data-toggle="modal" data-target="#formemodal"
+                                                    onclick="add_input_id(this)">{{ xmsqd.xqid }}</td>
+                                            {% else %}
+                                                <td> {{ xmsqd.xqid }}</td>
+                                            {% endif %}
                                             <td>{{ xmsqd.xmname }}</td>
                                             <td>{{ xmsqd.xmdiqu }}</td>
                                             <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>

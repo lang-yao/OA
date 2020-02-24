@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import time
 # Create your views here.
 from django.shortcuts import redirect
@@ -50,7 +50,7 @@ def manager_xqadd(request):
         xmsqd.xmjl_id = userid
         xmsqd.save()
         print('事件ID: 03-1', '处理时间:', cltime, '新增项目ID:', xqid, )
-        return redirect('项目经理需求增加模块')
+        return JsonResponse({'status': 'success'})
     else:
         return render(request, 'xmjl_staff_demands_add.html')
 

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Tjd_staff(models.Model):
@@ -14,3 +15,4 @@ class Tjd_staff(models.Model):
                                              (1, '项目中')),
                                     default=0,
                                     verbose_name='状态')
+

@@ -41,9 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'account',
     'manageradmin',
     'manager',
+]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'account.cron.renwu', '>>/TOOLS/oa_renwu.log')
 ]
 
 MIDDLEWARE = [
@@ -78,6 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'OA.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -91,6 +97,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -126,12 +133,24 @@ USE_L10N = True
 
 USE_TZ = True
 
+# # 邮件配置
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.qq.com'
+# EMAIL_PORT = 25
+# EMAIL_HOST_USER = '1219155@qq.com'
+# EMAIL_HOST_PASSWORD = 'prlevniagpcdbgbi'
+
+
 # 邮件配置
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = 25
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.qq.com'  # 如果是 163 改成 smtp.163.com
+EMAIL_PORT = 465
 EMAIL_HOST_USER = '1219155@qq.com'
 EMAIL_HOST_PASSWORD = 'prlevniagpcdbgbi'
+
+# 系统逻辑处理LOG
+LOG_PATH = '/TOOLS/OA_cl.log'
 
 # 注册有效期天数
 CONFIRM_DAYS = 7

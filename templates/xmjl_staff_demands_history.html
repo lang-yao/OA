@@ -1,4 +1,5 @@
 {% load static %}
+{% load myjoin %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,8 +210,6 @@
 
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -234,15 +233,14 @@
                                     <tbody>
                                     {% for xmsqd in Xmsqds %}
                                         <tr>
-                                            <td>{{ xmsqd.xqid }}</td>
+                                            <td data-toggle="modal" data-target="#formemodal">{{ xmsqd.xqid }}</td>
                                             <td>{{ xmsqd.xmname }}</td>
                                             <td>{{ xmsqd.xmdiqu }}</td>
                                             <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.kstime | date:'Y/m/d' }}-{{ xmsqd.jstime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.xqry }}</td>
                                             <td>{{ xmsqd.get_zhuangtai_display }}</td>
-                                            {#                        <td data-toggle="modal" data-target="#formemodal">受理</td>#}
-                                            <td>{{ xmsqd.fpry }}</td>
+                                            <td>{{ xmsqd.fpry.all | join_members:',' }}</td>
                                             <td>{{ xmsqd.clbz }}</td>
                                         </tr>
                                     {% endfor %}

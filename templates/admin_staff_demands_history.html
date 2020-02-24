@@ -241,30 +241,53 @@
                                         <th>需求人数</th>
                                         <th>人员技能</th>
                                         <th>需求备注</th>
-                                        <th>分配人员</th>
                                         <th>处理结果</th>
+                                        <th>分配人员</th>
                                         <th>处理备注</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for xmsqd in Xmsqds %}
                                         <tr>
-                                            <td data-toggle="modal" data-target="#formemodal">{{ xmsqd.xqid }}</td>
+                                            <input value="{{ xmsqd.id }}" type="hidden"/>
+                                            <td data-toggle="modal" data-target="#formemodal"
+                                                onclick="add_input_id(this)">{{ xmsqd.xqid }}</td>
                                             <td>{{ xmsqd.xmname }}</td>
                                             <td>{{ xmsqd.cjtime | date:'Y/m/d' }}</td>
-                                            <td>{{ xmsqd.xmjl__first_name }}</td>
-                                            <td>{{ xmsqd.xmjl__staff_id }}</td>
+                                            <td>{{ xmsqd.xmjl.first_name }}</td>
+                                            <td>{{ xmsqd.xmjl.staff_id }}</td>
                                             <td>{{ xmsqd.kstime | date:'Y/m/d' }}-{{ xmsqd.jstime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.xmdiqu }}</td>
                                             <td>{{ xmsqd.xqry }}</td>
                                             <td>{{ xmsqd.ryjn }}</td>
                                             <td>{{ xmsqd.bzxx }}</td>
-                                            <td>{{ xmsqd.fpry.all | join:'，' }}</td>
                                             <td>{{ xmsqd.get_zhuangtai_display }}</td>
+                                            <td>{{ xmsqd.fpry.all | join_members:',' }}</td>
                                             <td>{{ xmsqd.clbz }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
+                                    <script>
+                                        function add_input_id(self) {
+                                            ele_id = self.previousElementSibling.value;
+                                            ele = document.createElement('input');
+                                            ele.setAttribute('value', ele_id);
+                                            ele.setAttribute('type', 'hidden');
+                                            ele.setAttribute('name', 'id');
+                                            par = document.getElementsByClassName('modal-body')[0].firstElementChild;
+                                            par.append(ele);
+                                        }
+
+                                        function xuqiu_his_hidden(hid_id) {
+                                            var lab_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[2];
+                                            if (hid_id == '1') {
+                                                lab_diqu.style.display = 'none';
+                                            } else if (hid_id == '2') {
+                                                lab_diqu.style.display = 'block';
+                                            }
+                                        }
+                                    </script>
+
                                 </table>
                             </div>
                         </div>
@@ -290,43 +313,25 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form>
-
+                                <form action="{% url '需求变更模块' %}" method="post">
+                                    {% csrf_token %}
                                     <div class="form-group">
-                                        <label for="input-1">地区</label>
-                                        <input type="text" class="form-control" id="input-1" placeholder="">
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label for="input-2">人员</label>
+                                        <label for="input-3">状态变更</label>
                                         <div>
-                                            <select class="form-control multiple-select" multiple="multiple">
-                                                <option>张三</option>
-                                                <option>李四</option>
-                                                <option>王五</option>
-                                                <option>小李</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="input-3">处理状态</label>
-                                        <div>
-                                            <select class="form-control single-select">
+                                            <select class="form-control single-select" name="zhuangtai">
                                                 <option selected="selected" disabled="disabled" style='display: none'
                                                         value=''></option>
-                                                <option>受理</option>
-                                                <option>驳回</option>
+                                                <option value='3'>结束</option>
+                                                <option value='1'>延期</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-4">备注</label>
-                                        <input type="text" class="form-control" id="input-4" placeholder="">
+                                        <label>延期时间 <span style="color:red">*</span></label>
+                                        <input type="text" id="autoclose-datepicker" class="form-control"
+                                               data-date-format="yyyy-mm-dd" name="jstime">
                                     </div>
-
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>

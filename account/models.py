@@ -2,12 +2,10 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
-
 # Create your models here.
 
 class UserManager(BaseUserManager):
     '''重构USER.objects'''
-
     # _create_user(self)受保护的方法只能这个类中调用
     def _create_user(self, staff_id, username, password, **kwargs):
         if not staff_id:
@@ -26,7 +24,6 @@ class UserManager(BaseUserManager):
     def create_superuser(self, staff_id, username, password, **kwargs):
         kwargs['is_superuser'] = True
         return self._create_user(staff_id=staff_id, username=username, password=password, **kwargs)
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     '''重构USER模型'''

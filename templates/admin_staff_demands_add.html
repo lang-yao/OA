@@ -272,6 +272,18 @@
                                             par = document.getElementsByClassName('modal-body')[0].firstElementChild;
                                             par.append(ele);
                                         }
+
+                                        function xuqiu_add_hidden(hid_id) {
+                                            var lab_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[2];
+                                            var sel_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[3].children[0];
+                                            if (hid_id == '2') {
+                                                lab_diqu.style.display = 'none';
+                                                sel_diqu.style.display = 'none';
+                                            } else if (hid_id == '1') {
+                                                lab_diqu.style.display = 'block';
+                                                sel_diqu.style.display = 'block';
+                                            }
+                                        }
                                     </script>
                                 </table>
                             </div>
@@ -312,7 +324,6 @@
                                         </div>
                                     </div>
 
-
                                     <label for="input-5">地区/人员</label>
                                     <div>
                                         <form>
@@ -330,33 +341,6 @@
                                             </div>
                                         </form>
                                         <div>
-
-
-                                            {#                            <div class="form-group">#}
-                                            {#                               <label for="input-4">地区  <span style="color:red">*</span></label>#}
-                                            {#                               <div>#}
-                                            {#								<select class="form-control single-select" name = "">#}
-                                            {#								<option selected="selected" disabled="disabled"  style='display: none' value=''></option>#}
-                                            {#                                    {% for diqu in diqus %}#}
-                                            {#                                    <option>{{ diqu.diqu }}</option>#}
-                                            {#                                    {% endfor %}#}
-                                            {#							    </select>#}
-                                            {#							  </div>#}
-                                            {#                            </div>#}
-                                            {##}
-                                            {##}
-                                            {##}
-                                            {#						  <div class="form-group">#}
-                                            {#							<label for="input-2">人员</label>#}
-                                            {#							<div>#}
-                                            {#							  <select class="form-control multiple-select" multiple="multiple">#}
-                                            {#							  <option>张三 - A001213</option>#}
-                                            {#							  <option>李四</option>#}
-                                            {#							  <option>王五</option>#}
-                                            {#							  <option>小李</option>#}
-                                            {#							  </select>#}
-                                            {#							</div>#}
-                                            {#						  </div>#}
 
 
                                             <div class="form-group">

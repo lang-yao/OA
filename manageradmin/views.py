@@ -1,15 +1,21 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Tjd_staff
-from django.shortcuts import redirect
+import re, time
+
 from django.contrib.auth.decorators import permission_required
-from account.models import User
 from django.contrib.auth.models import Group, ContentType, Permission
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
+
+from account.models import User
+from .models import Tjd_staff
 
 # Create your views here.
 # 访问限制模块 @login_required
-from django.contrib.auth.decorators import login_required
+# Create your views here.
+# 访问限制模块 @login_required
+cltime = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 
 
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
@@ -73,8 +79,22 @@ def tjd_add(request):
         tjd_staff.dengji = dengji
         tjd_staff.zhuangtai = zhuangtai
         # 写入
-        tjd_staff.save()
-        return redirect('管理员突击队模块')
+        res = {
+            'status': 'success',
+            'err': ''
+        }
+        # TODO 人员添加异常
+        try:
+            tjd_staff.save()
+        except Exception as  e:
+            if e.__class__.__name__ == 'IntegrityError':
+                res['err'] = re.search(r'key \'(.*)\'', str(e)).group(1)
+                res['status'] = 'error'
+        finally:
+            if res['status'] == 'error':
+                print('人员加入失败')
+            print(res)
+            return JsonResponse(res)
     else:
         return redirect('管理员突击队模块')
 
@@ -140,75 +160,6 @@ def manager_user_list(request):
     context = {}
     context['xmjls'] = xmjls
     return render(request, 'admin_staff_xmjl.html', context)
-
-
-# def xm_group(request):
-#     '''创建项目组权限'''
-#     if Group.objects.filter(name='项目组').first():                            #判断是否存在项目组如果不存在则创建
-#         group = Group.objects.create(name='项目组')                              #创建项目组
-#         content_type = ContentType.objects.get_for_model(Xmsqd)              #通过model或者model的实例来寻找ContentType类型
-#         permissions = Permission.objects.filter(content_type=content_type)      #获取model实例的全部权限列表
-#         permissions = (permissions[0],permissions[3])                           #配置增加和查看权限
-#         group.permissions.set(permissions)                                      #添加分组权限
-#
-#
-#         return HttpResponse('创建项目组分组权限成功')
-#
-#     else:
-#
-#         return HttpResponse('创建分组权限成功')
-# group = Group.objects.create(name='项目组')                              #创建项目组
-# content_type = ContentType.objects.get_for_model(Xmsqd)              #通过model或者model的实例来寻找ContentType类型
-# permissions = Permission.objects.filter(content_type=content_type)      #获取model实例的全部权限列表
-# permissions = (permissions[0],permissions[3])                           #配置增加和查看权限
-# group.permissions.set(permissions)                                      #添加分组权限
-# return HttpResponse('创建项目组分组权限成功')
-
-# group.permissions.add(permissions[3])                                               #添加权限。
-#     # group.permissions.remove：                                               #移除权限。
-#     # group.permissions.clear：                                                #清除所有权限。
-#     group.save()
-#     # return HttpResponse('创建分组权限成功')
-#
-#     group = Group.objects.filter(name = '项目组').first()                              #获取项目组
-#     user = User.objects.first()
-#     user.groups.add(group)
-#     user.save()
-#     yonghuquanxian =  user.get_group_permissions()                                                     #获取用户所属组的权限
-#     print('yonghuquanxian',yonghuquanxian)
-#     # user.save()
-#     # return HttpResponse('添加用户进入分组权限成功')
-#     # user = User.objects.first()
-#
-#     # if user.has_perms(['login.view_wenzhang,login.edit_wenzhang']):                  #判断用户有没有多个权限
-#     # if user.has_perm('login.view_wenzhang'):  # 判断用户有没有权限
-#     #     print('有权限')
-#     # else:
-#     #     print('没有权限')
-#     return HttpResponse('创建项目组成功')
-
-# def admin_group(request):
-#     '''创建管理组权限'''
-#     group = Group.objects.create(name='管理组')                              #创建项目组
-#     '''获取USER模型全部权限'''
-#     content_type = ContentType.objects.get_for_model(User)              #通过model或者model的实例来寻找ContentType类型
-#     permissions = Permission.objects.filter(content_type=content_type)      #获取model实例的全部权限列表
-#     group.permissions.set(permissions)                                      #添加分组权限
-#     print('user权限', permissions)
-#     group.save()
-#     '''获取Tjd_staff模型全部权限'''
-#     content_type = ContentType.objects.get_for_model(Tjd_staff)              #通过model或者model的实例来寻找ContentType类型
-#     permissions = Permission.objects.filter(content_type=content_type)      #获取model实例的全部权限列表
-#     group.permissions.add(*permissions)                                      #添加分组权限
-#     print('突击队权限', permissions)
-#     group.save()
-#
-#     '''获取Xmsqd模型查看修改权限'''
-#     content_type = ContentType.objects.get_for_model(Xmsqd)              #通过model或者model的实例来寻找ContentType类型
-#     permissions = Permission.objects.filter(content_type=content_type)      #获取model实例的全部权限列表
-#     permissions = (permissions[1],permissions[3])                           #配置增加和查看权限
-#     group.permissions.add(*permissions)                                      #添加分组权限
-#     return HttpResponse('创建管理组分组权限成功')
 
 
 def admin_user_add(request):
@@ -306,14 +257,29 @@ def manager_user_add(request):
             email = request.POST['email']
             password = request.POST['password']
             diqu = request.POST['diqu']
-            user = User.objects.create_user(username=username, first_name=first_name, staff_id=staff_id, iphone=iphone,
-                                            email=email, password=password, diqu=diqu)
-            group = Group.objects.filter(name='项目组').first()  # 获取项目组
-            user.groups.add(group)
-            user.save()
-            msg = '添加成功'
-            print(msg)
-            return redirect('管理员项目经理模块')
+            # TODO 项目经理异常
+            res = {
+                'status': 'success',
+                'err': ''
+            }
+            try:
+                user = User.objects.create_user(username=username, first_name=first_name, staff_id=staff_id,
+                                                iphone=iphone,
+                                                email=email, password=password, diqu=diqu)
+                group = Group.objects.filter(name='项目组').first()  # 获取项目组
+                user.groups.add(group)
+                user.save()
+            except Exception as  e:
+                if e.__class__.__name__ == 'IntegrityError':
+                    res['err'] = re.search(r'key \'(.*)\'', str(e)).group(1)
+                    res['status'] = 'error'
+            finally:
+                if res['status'] == 'error':
+                    print('项目经理添加失败')
+                else:
+                    print('创建项目组成功，添加成功')
+                print(res)
+                return JsonResponse(res)
         else:
             print('项目组不存在')
             group = Group.objects.create(name='项目组')  # 创建项目组
@@ -330,14 +296,30 @@ def manager_user_add(request):
             email = request.POST['email']
             password = request.POST['password']
             diqu = request.POST['diqu']
-            user = User.objects.create_user(username=username, first_name=first_name, staff_id=staff_id, iphone=iphone,
-                                            email=email, password=password, diqu=diqu)
-            group = Group.objects.filter(name='项目组').first()  # 获取项目组
-            user.groups.add(group)
-            user.save()
-            msg = '创建项目组成功，添加成功'
-            print(msg)
-            return redirect('管理员项目经理模块')
+            # TODO 项目经理异常
+            res = {
+                'status': 'success',
+                'err': ''
+            }
+            try:
+                user = User.objects.create_user(username=username, first_name=first_name, staff_id=staff_id,
+                                                iphone=iphone,
+                                                email=email, password=password, diqu=diqu)
+                group = Group.objects.filter(name='项目组').first()  # 获取项目组
+                user.groups.add(group)
+                user.save()
+            except Exception as  e:
+                if e.__class__.__name__ == 'IntegrityError':
+                    res['err'] = re.search(r'key \'(.*)\'', str(e)).group(1)
+                    res['status'] = 'error'
+            finally:
+                if res['status'] == 'error':
+                    print('项目经理添加失败')
+                else:
+                    print('创建项目组成功，添加成功')
+                print(res)
+                return JsonResponse(res)
+
     else:
         return redirect('管理员项目经理模块')
 
@@ -417,29 +399,6 @@ def admin_xqadd(request):
                                                         'xmjl__staff_id', 'kstime', 'jstime', 'xmdiqu', 'xqry', 'ryjn',
                                                         'bzxx')
 
-    # print(Xmsqds)
-    #
-    # first_name = {}
-    # print('正向查询-------')
-    # for i in Xmsqds:
-    #     xmjl = Xmsqd.objects.get(pk=i.id)
-    #     aa =xmjl.xmjl.all()
-    #     for i in aa:
-    #         print(i.first_name)
-
-    # print(first_name)
-    # print(a)
-
-    # print('反向查询-------')
-    # aaaa = User.objects.get(pk=2)
-    # print(aaaa.xmsqd_set.all().values('xqid'))
-
-    # Xmsqds1 = Xmsqd.objects.get(pk=1)
-    # print(Xmsqds1)
-    # a = Xmsqds1.xmjl.all()
-    # for i in a:
-    #     print(i.first_name)
-
     '''获取未分配的人员地区进行去重'''
     diqus = Tjd_staff.objects.filter(zhuangtai='0').values('diqu').distinct()
     dfpry = defaultdict(list)
@@ -457,17 +416,6 @@ def admin_xqadd(request):
         'diqus': diqus,
         'dfpry': dfpry,
     }
-    # print(context['dfpry'])
-
-    # for k ,v in dfpry.items():
-    #     print(k)
-    #     for i in v :
-    #         print(i)
-
-    # context = {
-    #     'Xmsqds': Xmsqds,
-    #     'diqus': diqus,
-    # }
     return render(request, 'admin_staff_demands_add.html', context)
 
 
@@ -478,14 +426,11 @@ def admin_xqadd(request):
 def admin_xqaddhistory(request):
     '''项目历史申请单'''
 
-    # Xmsqds = Xmsqd.objects.values('id', 'xqid', 'xmname', 'zhuangtai', 'cjtime', 'xmjl__first_name', 'xmjl__staff_id',
-    #                               'kstime', 'jstime', 'xmdiqu', 'xqry', 'ryjn', 'bzxx', 'clbz', 'fpry__name')
+    Xmsqds = Xmsqd.objects.exclude(zhuangtai='0')
 
-    Xmsqds = Xmsqd.objects.all()
     context = {
         'Xmsqds': Xmsqds
     }
-
     return render(request, 'admin_staff_demands_history.html', context)
 
 
@@ -709,21 +654,328 @@ def admin_xqaddcl(request):
     else:
         return redirect('新增需求模块')
 
-# @permission_required(['account.change_user','account.add_user','account.view_user','account.delete_user','manageradmin.change_tjd_staff','manageradmin.delete_tjd_staff','manageradmin.add_tjd_staff','manageradmin.view_tjd_staff','manager.view_xmsqd','manager.change_xmsqd'],login_url='login',raise_exception=True)
-# def admin_xqaddcl(request):
-#     if request.method == 'POST':
-#         # xqid = request.POST['xqid']
-#         zhuangtai = request.POST['zhuangtai']
-#         renyuanlist = request.POST.getlist('renyuanlist')
-#         fpry = (",".join(str(i) for i in renyuanlist))
-#         clbz = request.POST['clbz']
-#         print(renyuanlist)
-#         print(zhuangtai,clbz)
-#         xqaddcl = Xmsqd.objects.get(xqid='A0000000')
-#         xqaddcl.zhuangtai=zhuangtai
-#         xqaddcl.clbz = clbz
-#         xqaddcl.fpry = fpry
-#         xqaddcl.save()
-#         return redirect('新增需求模块')
-#     else:
-#         return redirect('新增需求模块')
+
+@require_http_methods(["POST"])
+def admin_xqcl(request):
+    id = request.POST['id']
+    zhuangtai = request.POST['zhuangtai']
+    jstime = request.POST['jstime']
+    if zhuangtai == '3':
+        zhuangtaistr = '结束-待评价'
+        xqaddcl = Xmsqd.objects.get(pk=id)
+        xqaddcl_email = xqaddcl.xmjl.email
+        xqaddcl.zhuangtai = zhuangtai
+        xqaddcl.xqcltime = cltime
+        xqaddcl.jstime = cltime
+        xmrys = xqaddcl.fpry.all()
+        renyuanlist = []
+        for xmry in xmrys:
+            xmry = Tjd_staff.objects.get(staff_id=xmry.staff_id)
+            renyuan = xmry.name + '-' + xmry.staff_id
+            renyuanlist.append(renyuan)
+            xmry.zhuangtai = '0'
+            xmry.save()
+        xqaddcl.save()
+        subject = '突击队管理平台'
+        text_content = '''如果你看到这条消息，说明你的邮箱服务器不提供HTML链接功能，请联系管理员！'''
+        html_content = '''<html>
+ <head>
+  <meta charset="utf-8" />
+ </head>
+ <body>
+  <div class="content-wrap" style="margin: 0px auto; overflow: hidden; padding: 0px; border: 0px dotted rgb(238, 238, 238); width: 600px;">
+   <!---->
+   <div tindex="1" style="margin: 0px auto; max-width: 600px;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(255, 255, 255); background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 1% 50%;">
+     <tbody>
+      <tr>
+       <td style="direction: ltr; font-size: 0px; text-align: center; vertical-align: top; width: 600px;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="vertical-align: top;">
+         <tbody>
+          <tr>
+           <td style="width: 100%; max-width: 100%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+            <div class="full" style="margin: 0px auto; max-width: 600px;">
+             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 600px;">
+              <tbody>
+               <tr>
+                <td style="direction: ltr; font-size: 0px; padding-top: 0px; text-align: center; vertical-align: top;">
+                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                  <tbody>
+                   <tr>
+                    <td align="center" vertical-align="middle" style="padding-top: 40px; width: 600px; background-image: url(&quot;&quot;); background-size: 100px; background-position: 10% 50%; background-repeat: no-repeat;"></td>
+                   </tr>
+                  </tbody>
+                 </table></td>
+               </tr>
+              </tbody>
+             </table>
+            </div></td>
+          </tr>
+         </tbody>
+        </table></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div tindex="2" style="margin: 0px auto; max-width: 600px;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(255, 255, 255); background-image: url(&quot;https://www.drageasy.com/Uploads/2020/0211/e766c3e58cf27883e641a68390fb3637.png&quot;); background-repeat: no-repeat; background-size: 205px; background-position: 100% 34%;">
+     <tbody>
+      <tr>
+       <td style="direction: ltr; font-size: 0px; text-align: center; vertical-align: top; width: 600px;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="vertical-align: top;">
+         <tbody>
+          <tr>
+           <td style="width: 66.6667%; max-width: 66.6667%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+            <div class="full" style="margin: 0px auto; max-width: 600px;">
+             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 400px;">
+              <tbody>
+               <tr>
+                <td style="direction: ltr; width: 400px; font-size: 0px; padding-bottom: 0px; text-align: center; vertical-align: top; background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 10% 50%;">
+                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                  <tbody>
+                   <tr>
+                    <td align="left" style="font-size: 0px; padding: 20px 0px;">
+                     <div class="text" style="font-family: &quot;Microsoft YaHei&quot;; overflow-wrap: break-word; margin: 0px; text-align: left; line-height: 20px; color: rgb(102, 102, 102); font-size: 14px; font-weight: normal;">
+                      <div>
+                       <h4><strong>项目:{} - </strong><strong style="color: rgb(230, 0, 0);">{}</strong></h4>
+                      </div>
+                     </div></td>
+                   </tr>
+                  </tbody>
+                 </table></td>
+               </tr>
+              </tbody>
+             </table>
+            </div></td>
+           <td style="width: 33.3333%; max-width: 33.3333%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+            <!----></td>
+          </tr>
+         </tbody>
+        </table></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div tindex="3" style="margin: 0px auto; max-width: 600px;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(255, 255, 255); background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 1% 50%;">
+     <tbody>
+      <tr>
+       <td style="direction: ltr; font-size: 0px; text-align: center; vertical-align: top; width: 600px;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="vertical-align: top;">
+         <tbody>
+          <tr>
+           <td style="width: 50%; max-width: 50%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+            <div class="full" style="margin: 0px auto; max-width: 600px;">
+             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 300px;">
+              <tbody>
+               <tr>
+                <td style="direction: ltr; width: 300px; font-size: 0px; padding-bottom: 0px; text-align: center; vertical-align: top; background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 10% 50%;">
+                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                  <tbody>
+                   <tr>
+                    <td align="left" style="font-size: 0px; padding: 20px;">
+                     <div class="text" style="font-family: &quot;Microsoft YaHei&quot;; overflow-wrap: break-word; margin: 0px; text-align: center; line-height: 20px; color: rgb(102, 102, 102); font-size: 14px; font-weight: normal;">
+                      <div>
+
+                      </div>
+                     </div></td>
+                   </tr>
+                  </tbody>
+                 </table></td>
+               </tr>
+              </tbody>
+             </table>
+            </div></td>
+           <td style="width: 50%; max-width: 50%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+            <div class="full" style="margin: 0px auto; max-width: 600px;">
+             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 300px;">
+              <tbody>
+               <tr>
+                <td style="direction: ltr; width: 300px; font-size: 0px; padding-bottom: 0px; text-align: center; vertical-align: top; background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 10% 50%;">
+                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                  <tbody>
+                   <tr>
+                    <td align="left" style="font-size: 0px; padding: 20px;">
+                     <div class="text" style="font-family: &quot;Microsoft YaHei&quot;; overflow-wrap: break-word; margin: 0px; text-align: right; line-height: 20px; color: rgb(102, 102, 102); font-size: 14px; font-weight: normal;">
+                      <div>
+                       <h5>{}</h5>
+                      </div>
+                     </div></td>
+                   </tr>
+                  </tbody>
+                 </table></td>
+               </tr>
+              </tbody>
+             </table>
+            </div></td>
+          </tr>
+         </tbody>
+        </table></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </body>
+</html>'''.format(xqaddcl.xqid, zhuangtaistr, cltime)
+        msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [xqaddcl_email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        fprystr = (",".join(str(i) for i in renyuanlist))
+        print('事件ID: 05-2', '处理时间:', cltime, '项目ID:', id, '处理状态:', zhuangtaistr, '释放人员:', fprystr)
+        return redirect('历史需求模块')
+    elif zhuangtai == '1':
+        zhuangtaistr = '续期'
+        xqaddcl = Xmsqd.objects.get(pk=id)
+        xqaddcl_email = xqaddcl.xmjl.email
+        xqaddcl.xqcltime = cltime
+        xqaddcl.jstime = jstime
+        xqaddcl.save()
+        subject = '突击队管理平台'
+        text_content = '''如果你看到这条消息，说明你的邮箱服务器不提供HTML链接功能，请联系管理员！'''
+        html_content = '''<html>
+         <head>
+          <meta charset="utf-8" />
+         </head>
+         <body>
+          <div class="content-wrap" style="margin: 0px auto; overflow: hidden; padding: 0px; border: 0px dotted rgb(238, 238, 238); width: 600px;">
+           <!---->
+           <div tindex="1" style="margin: 0px auto; max-width: 600px;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(255, 255, 255); background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 1% 50%;">
+             <tbody>
+              <tr>
+               <td style="direction: ltr; font-size: 0px; text-align: center; vertical-align: top; width: 600px;">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="vertical-align: top;">
+                 <tbody>
+                  <tr>
+                   <td style="width: 100%; max-width: 100%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+                    <div class="full" style="margin: 0px auto; max-width: 600px;">
+                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 600px;">
+                      <tbody>
+                       <tr>
+                        <td style="direction: ltr; font-size: 0px; padding-top: 0px; text-align: center; vertical-align: top;">
+                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                          <tbody>
+                           <tr>
+                            <td align="center" vertical-align="middle" style="padding-top: 40px; width: 600px; background-image: url(&quot;&quot;); background-size: 100px; background-position: 10% 50%; background-repeat: no-repeat;"></td>
+                           </tr>
+                          </tbody>
+                         </table></td>
+                       </tr>
+                      </tbody>
+                     </table>
+                    </div></td>
+                  </tr>
+                 </tbody>
+                </table></td>
+              </tr>
+             </tbody>
+            </table>
+           </div>
+           <div tindex="2" style="margin: 0px auto; max-width: 600px;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(255, 255, 255); background-image: url(&quot;https://www.drageasy.com/Uploads/2020/0211/e766c3e58cf27883e641a68390fb3637.png&quot;); background-repeat: no-repeat; background-size: 205px; background-position: 100% 34%;">
+             <tbody>
+              <tr>
+               <td style="direction: ltr; font-size: 0px; text-align: center; vertical-align: top; width: 600px;">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="vertical-align: top;">
+                 <tbody>
+                  <tr>
+                   <td style="width: 66.6667%; max-width: 66.6667%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+                    <div class="full" style="margin: 0px auto; max-width: 600px;">
+                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 400px;">
+                      <tbody>
+                       <tr>
+                        <td style="direction: ltr; width: 400px; font-size: 0px; padding-bottom: 0px; text-align: center; vertical-align: top; background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 10% 50%;">
+                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                          <tbody>
+                           <tr>
+                            <td align="left" style="font-size: 0px; padding: 20px 0px;">
+                             <div class="text" style="font-family: &quot;Microsoft YaHei&quot;; overflow-wrap: break-word; margin: 0px; text-align: left; line-height: 20px; color: rgb(102, 102, 102); font-size: 14px; font-weight: normal;">
+                              <div>
+                               <h4><strong>项目:{} - </strong><strong style="color: rgb(230, 0, 0);">{} 至 {}</strong></h4>
+                              </div>
+                             </div></td>
+                           </tr>
+                          </tbody>
+                         </table></td>
+                       </tr>
+                      </tbody>
+                     </table>
+                    </div></td>
+                   <td style="width: 33.3333%; max-width: 33.3333%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+                    <!----></td>
+                  </tr>
+                 </tbody>
+                </table></td>
+              </tr>
+             </tbody>
+            </table>
+           </div>
+           <div tindex="3" style="margin: 0px auto; max-width: 600px;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(255, 255, 255); background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 1% 50%;">
+             <tbody>
+              <tr>
+               <td style="direction: ltr; font-size: 0px; text-align: center; vertical-align: top; width: 600px;">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="vertical-align: top;">
+                 <tbody>
+                  <tr>
+                   <td style="width: 50%; max-width: 50%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+                    <div class="full" style="margin: 0px auto; max-width: 600px;">
+                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 300px;">
+                      <tbody>
+                       <tr>
+                        <td style="direction: ltr; width: 300px; font-size: 0px; padding-bottom: 0px; text-align: center; vertical-align: top; background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 10% 50%;">
+                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                          <tbody>
+                           <tr>
+                            <td align="left" style="font-size: 0px; padding: 20px;">
+                             <div class="text" style="font-family: &quot;Microsoft YaHei&quot;; overflow-wrap: break-word; margin: 0px; text-align: center; line-height: 20px; color: rgb(102, 102, 102); font-size: 14px; font-weight: normal;">
+                              <div>
+
+                              </div>
+                             </div></td>
+                           </tr>
+                          </tbody>
+                         </table></td>
+                       </tr>
+                      </tbody>
+                     </table>
+                    </div></td>
+                   <td style="width: 50%; max-width: 50%; min-height: 1px; font-size: 13px; text-align: left; direction: ltr; vertical-align: top; padding: 0px;">
+                    <div class="full" style="margin: 0px auto; max-width: 600px;">
+                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 300px;">
+                      <tbody>
+                       <tr>
+                        <td style="direction: ltr; width: 300px; font-size: 0px; padding-bottom: 0px; text-align: center; vertical-align: top; background-image: url(&quot;&quot;); background-repeat: no-repeat; background-size: 100px; background-position: 10% 50%;">
+                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="vertical-align: top;">
+                          <tbody>
+                           <tr>
+                            <td align="left" style="font-size: 0px; padding: 20px;">
+                             <div class="text" style="font-family: &quot;Microsoft YaHei&quot;; overflow-wrap: break-word; margin: 0px; text-align: right; line-height: 20px; color: rgb(102, 102, 102); font-size: 14px; font-weight: normal;">
+                              <div>
+                               <h5>{}</h5>
+                              </div>
+                             </div></td>
+                           </tr>
+                          </tbody>
+                         </table></td>
+                       </tr>
+                      </tbody>
+                     </table>
+                    </div></td>
+                  </tr>
+                 </tbody>
+                </table></td>
+              </tr>
+             </tbody>
+            </table>
+           </div>
+          </div>
+         </body>
+        </html>'''.format(xqaddcl.xqid, zhuangtaistr, jstime, cltime)
+        msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [xqaddcl_email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        return redirect('历史需求模块')
+    else:
+        return redirect('历史需求模块')

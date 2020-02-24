@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+import time
 # Create your views here.
 from django.shortcuts import redirect
-
 # 访问限制模块 @login_required
 from django.contrib.auth.decorators import login_required, permission_required
+
+cltime = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 
 
 @permission_required('manager.add_xmsqd', login_url='login', raise_exception=True)
@@ -36,7 +37,6 @@ def manager_xqadd(request):
         kstime = request.POST['kstime']
         jstime = request.POST['jstime']
         xmsqd = Xmsqd()
-        # print(xmname,xmdiqu,xqry,ryjn,bzxx,kstime,jstime)
         userid = request.session.get('_auth_user_id')
         '''获取项目组用户名称及工号'''
         xmsqd.xmname = xmname
@@ -49,6 +49,7 @@ def manager_xqadd(request):
         xmsqd.jstime = jstime
         xmsqd.xmjl_id = userid
         xmsqd.save()
+        print('事件ID: 03-1', '处理时间:', cltime, '新增项目ID:', xqid, )
         return redirect('项目经理需求增加模块')
     else:
         return render(request, 'xmjl_staff_demands_add.html')
@@ -56,10 +57,10 @@ def manager_xqadd(request):
 
 @permission_required('manager.add_xmsqd', login_url='login', raise_exception=True)
 def manager_xqhistory(request):
-    xmjl_staff_id = request.user.staff_id
-    Xmsqds = Xmsqd.objects.filter(xmjl_staff_id=xmjl_staff_id)
-    context = {}
-    context['Xmsqds'] = Xmsqds
-    for i in context:
-        print(i)
+    user_id = request.user.id
+    Xmsqds = Xmsqd.objects.filter(xmjl=user_id).all()
+
+    context = {
+        'Xmsqds': Xmsqds
+    }
     return render(request, 'xmjl_staff_demands_history.html', context)

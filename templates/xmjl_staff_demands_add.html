@@ -305,10 +305,20 @@
                                     <label class="col-sm-2 col-form-label"></label>
 
                                     <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-white px-5"><i
+                                        <button type="submit" class="btn btn-white px-5" onclick="alert_success()"><i
                                                 class="fa fa-check-square-o"></i> 确认
                                         </button>
                                     </div>
+                                    <script>
+                                        function alert_success() {
+                                            swal({
+                                                title: "添加成功!",
+                                                icon: "success",
+                                            }).then((clc) => {
+                                                window.location.href = "/manager/manager_xqadd/"
+                                            });
+                                        }
+                                    </script>
                                 </div>
                             </form>
                         </div>
@@ -378,6 +388,8 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/alerts-boxes/js/sweetalert.min.js' %}"></script>
+<script src="{% static 'plugins/alerts-boxes/js/sweet-alert-script.js' %}"></script>
 
 <!-- simplebar js -->
 <script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>

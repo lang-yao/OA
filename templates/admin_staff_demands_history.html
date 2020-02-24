@@ -267,7 +267,9 @@
                                             <td>{{ xmsqd.ryjn }}</td>
                                             <td>{{ xmsqd.bzxx }}</td>
                                             <td>{{ xmsqd.get_zhuangtai_display }}</td>
-                                            <td>{{ xmsqd.fpry.all | join_members:',' }}</td>
+                                            <td data-toggle="modal"
+                                                data-target="#form-access"
+                                                onclick="access_data()">{{ xmsqd.fpry.all | join_members:',' }}</td>
                                             <td>{{ xmsqd.clbz }}</td>
                                         </tr>
                                     {% endfor %}
@@ -290,6 +292,25 @@
                                             } else if (hid_id == '1') {
                                                 lab_diqu.style.display = 'block';
                                             }
+                                        }
+
+                                        function access_data() {
+                                            var csrfcookies = $.cookie('csrftoken');
+                                            var demand_id = document.getElementsByClassName("odd")[0].firstElementChild.value;
+                                            $.ajax({
+                                                type: "POST",
+                                                headers: {
+                                                    'X-CSRFtoken': csrfcookies,
+                                                },
+                                                url: "/manageradmin/query_demand_person/",
+                                                data: {
+                                                    id: demand_id,
+                                                },
+                                                {#async: false,#}
+                                                success: function (data) {
+                                                    {#alert(data['status']);#}
+                                                }
+                                            });
                                         }
                                     </script>
 
@@ -340,6 +361,51 @@
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
+                                            确认
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="form-access">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">项目评价</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url '需求变更模块' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="input-3">支持人员</label>
+                                        <table id="example" class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>工号</th>
+                                                <th>姓名</th>
+                                                <th>评价</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {#                                            {% for xmsqd in Xmsqds %}#}
+                                            <tr>
+                                                <td>aaa</td>
+                                                <td>aaa</td>
+                                                <td>
+                                                    点击<a href="#" style="color: #0dceec">评价</a>
+                                                </td>
+                                            </tr>
+                                            {#                                            {% endfor %}#}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-light"><i class="fa fa-check-square-o"></i>
                                             确认
                                         </button>
                                     </div>
@@ -409,6 +475,7 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
 
 <!-- simplebar js -->
 <script src="{% static 'plugins/simplebar/js/simplebar.js' %}"></script>

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 from account.models import User
 from django.contrib.auth.models import Group, ContentType, Permission
 from django.views.decorators.csrf import ensure_csrf_cookie
-import time, re
+import time, re, json
 from django.views.decorators.http import require_http_methods
 
 # Create your views here.
@@ -42,7 +42,6 @@ def tjd_index(request):
                       'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
                       'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
                      raise_exception=True)
-
 def tjd_list(request):
     '''突击队列表'''
     tjds = Tjd_staff.objects.all()
@@ -152,7 +151,6 @@ def manager_user_list(request):
     context = {}
     context['xmjls'] = xmjls
     return render(request, 'admin_staff_xmjl.html', context)
-
 
 
 def admin_user_add(request):
@@ -381,7 +379,6 @@ def admin_xqaddhistory(request):
     return render(request, 'admin_staff_demands_history.html', context)
 
 
-
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
@@ -593,7 +590,8 @@ def admin_xqaddcl(request):
                           xqaddcl.jstime, fprystr, clbz, cltime)
         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [xqaddcl_email])
         msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        # TODO 邮件注释
+        # msg.send()
         print('事件ID: 05-1', '处理时间:', cltime, '项目ID:', id, '处理状态:', zhuangtaistr, '分配人员:', fprystr)
 
         return redirect('新增需求模块')
@@ -764,7 +762,8 @@ def admin_xqcl(request):
 </html>'''.format(xqaddcl.xqid, zhuangtaistr, cltime)
         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [xqaddcl_email])
         msg.attach_alternative(html_content, "text/html")
-        msg.send()
+
+        # msg.send()
         fprystr = (",".join(str(i) for i in renyuanlist))
         print('事件ID: 05-2', '处理时间:', cltime, '项目ID:', id, '处理状态:', zhuangtaistr, '释放人员:', fprystr)
         return redirect('历史需求模块')
@@ -919,7 +918,27 @@ def admin_xqcl(request):
         </html>'''.format(xqaddcl.xqid, zhuangtaistr, jstime, cltime)
         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [xqaddcl_email])
         msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        # msg.send()
         return redirect('历史需求模块')
     else:
         return redirect('历史需求模块')
+
+
+@permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
+                      'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
+                      'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
+                     raise_exception=True)
+@require_http_methods(["POST"])
+def query_demand_staff(request):
+    '''人员查询模块'''
+    id = request.POST['id']
+    xqaddcl = Xmsqd.objects.get(pk=id)
+    access = json.loads(xqaddcl.access)
+    data = {}
+    for i in xqaddcl.fpry.all():
+        print(i.staff_id, i.name)
+        data[i.staff_id] = {
+            'name': i.name,
+            'access': access[i.staff_id]
+        }
+    return JsonResponse(data)

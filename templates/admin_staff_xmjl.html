@@ -398,7 +398,7 @@
                                                     if (data['status'] == 'success') {
                                                         swal({
                                                             title: "人员添加成功!",
-                                                            icon: "warning",
+                                                            icon: "success",
                                                         }).then((clc) => {
                                                             window.location.href = "/manageradmin/tjd_list/"
                                                         });
@@ -406,22 +406,22 @@
                                                         if (data['err'] == 'username') {
                                                             swal({
                                                                 title: "用户名不能重复",
-                                                                icon: "warning",
+                                                                icon: "error",
                                                             })
                                                         } else if (data['err'] == 'staff_id') {
                                                             swal({
                                                                 title: "工号不能重复",
-                                                                icon: "warning",
+                                                                icon: "error",
                                                             })
                                                         } else if (data['err'] == 'iphone') {
                                                             swal({
                                                                 title: "电话不能重复",
-                                                                icon: "warning",
+                                                                icon: "error",
                                                             })
                                                         } else if (data['err'] == 'email') {
                                                             swal({
                                                                 title: "邮箱不能重复",
-                                                                icon: "warning",
+                                                                icon: "error",
                                                             })
                                                         }
                                                     }

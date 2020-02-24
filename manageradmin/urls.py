@@ -9,7 +9,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path('admin_index/', views.tjd_index, name='管理员默认页面模块'),
     path('admin_user_add/', views.admin_user_add, name='管理人员添加'),
@@ -31,4 +30,6 @@ urlpatterns = [
     # path('admingroup/',views.admin_group,name ='添加管理组'),
     # path('xmgroup/',views.xm_group,name ='添加项目组'),
     # path('xm_user_add/',views.xm_group,name ='添加项目人员'),
+
+    path('query_demand_person/', views.query_demand_staff, name='人员查询模块'),
 ]

@@ -25,4 +25,4 @@ class Xmsqd(models.Model):
     fpry = models.ManyToManyField('manageradmin.Tjd_staff')
     xmjl = models.ForeignKey('account.User', on_delete=models.SET_NULL, null=True)
     clbz = models.CharField(max_length=100, verbose_name='处理备注')
-    # access = models.TextField(verbose_name='人员评价')
+    access = models.TextField(verbose_name='人员评价')

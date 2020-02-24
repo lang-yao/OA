@@ -484,8 +484,7 @@
                                                     if (data['status'] == 'success') {
                                                         swal({
                                                             title: "人员添加成功!",
-                                                            {#text: "添加！",#}
-                                                            icon: "warning",
+                                                            icon: "success",
                                                         }).then((clc) => {
                                                             window.location.href = "/manageradmin/tjd_list/"
                                                         });
@@ -493,7 +492,7 @@
                                                         if (data['err'] == 'staff_id') {
                                                             swal({
                                                                 title: "工号不能重复",
-                                                                icon: "warning",
+                                                                icon: "error",
                                                             })
                                                         }
                                                     }

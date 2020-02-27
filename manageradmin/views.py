@@ -134,11 +134,45 @@ def staff_del(request):
                       'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
                      raise_exception=True)
 @require_http_methods(["POST"])
-def tjd_update(request, tjd_id):
+def tjd_update(request):
     '''突击队人员编辑'''
-    tjd_renyuan = Tjd_staff.objects.get(pk=tjd_id)
-    return HttpResponse(tjd_id)
-    # return redirect('管理员突击队模块')
+    per_id = request.POST['id']
+    name = request.POST['name']
+    staff_id = request.POST['staff_id']
+    jineng = request.POST.getlist('jineng')
+    jineng = (",".join(str(i) for i in jineng))
+    ruzhitime = request.POST['ruzhitime']
+    fazhan = request.POST['fazhan']
+    diqu = request.POST['diqu']
+    dengji = request.POST['dengji']
+    zhuangtai = request.POST['zhuangtai']
+    # 获取post到models模型中
+    tjd_staff = Tjd_staff.objects.get(id=per_id)
+    tjd_staff.name = name
+    tjd_staff.staff_id = staff_id
+    tjd_staff.jineng = jineng
+    tjd_staff.ruzhitime = ruzhitime
+    tjd_staff.fazhan = fazhan
+    tjd_staff.diqu = diqu
+    tjd_staff.dengji = dengji
+    tjd_staff.zhuangtai = zhuangtai
+    # 写入
+    res = {
+        'status': 'success',
+        'err': ''
+    }
+    print('事件ID: 01-1', '处理时间:', cltime, '修改突击队人员：', name, '-', staff_id)
+    try:
+        tjd_staff.save()
+    except Exception as  e:
+        if e.__class__.__name__ == 'IntegrityError':
+            res['err'] = re.search(r'key \'(.*)\'', str(e)).group(1)
+            res['status'] = 'error'
+    finally:
+        if res['status'] == 'error':
+            print('人员修改')
+        print(res)
+        return JsonResponse(res)
 
 
 @permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
@@ -952,16 +986,42 @@ def query_demand_staff(request):
         xqaddcl.save()
     print(data)
     return JsonResponse(data)
-# def query_demand_staff(request):
-#     '''人员查询模块'''
-#     id = request.POST['id']
-#     xqaddcl = Xmsqd.objects.get(pk=id)
-#     access = json.loads(xqaddcl.access)
-#     data = {}
-#     for i in xqaddcl.fpry.all():
-#         data[i.staff_id] = {
-#             'name': i.name,
-#             'access': access[i.staff_id]
-#         }
-#     print(data)
-#     return JsonResponse(data)
+
+
+@permission_required(['account.change_user', 'account.add_user', 'account.view_user', 'account.delete_user',
+                      'manageradmin.change_tjd_staff', 'manageradmin.delete_tjd_staff', 'manageradmin.add_tjd_staff',
+                      'manageradmin.view_tjd_staff', 'manager.view_xmsqd', 'manager.change_xmsqd'], login_url='login',
+                     raise_exception=True)
+@require_http_methods(["POST"])
+def modify_clerk_staff(request):
+    '''人员查询模块'''
+
+    xmjl_id = request.POST['xmjl_id']
+    first_name = request.POST['first_name']
+    staff_id = request.POST['staff_id']
+    iphone = request.POST['iphone']
+    email = request.POST['email']
+    password = request.POST['password']
+    diqu = request.POST['diqu']
+
+    xmjl = User.objects.get(id=xmjl_id)
+    xmjl.first_name = first_name
+    xmjl.staff_id = staff_id
+    xmjl.iphone = iphone
+    xmjl.email = email
+    xmjl.password = password
+    xmjl.diqu = diqu
+
+    res = {
+        'status': 'success',
+        'err': ''
+    }
+    try:
+        xmjl.save()
+    except Exception as  e:
+        if e.__class__.__name__ == 'IntegrityError':
+            res['err'] = re.search(r'key \'(.*)\'', str(e)).group(1)
+            res['status'] = 'error'
+    finally:
+        print(res)
+        return JsonResponse(res)

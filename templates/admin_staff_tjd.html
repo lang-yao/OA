@@ -249,7 +249,8 @@
                                     {% for tjd in tjds %}
                                         <tr>
                                             <input value="{{ tjd.id }}" type="hidden"/>
-                                            <td data-toggle="modal" data-target="#formemodal">{{ tjd.name }}</td>
+                                            <td data-toggle="modal" data-target="#formemodal"
+                                                onclick="get_modify_msg(this)">{{ tjd.name }}</td>
                                             <td>{{ tjd.staff_id }}</td>
                                             <td>{{ tjd.jineng }}</td>
                                             <td>{{ tjd.ruzhitime | date:'Y/m/d' }}</td>
@@ -296,82 +297,103 @@
                                 </button>
 
                             </div>
+                            <script>
+                                function get_modify_msg(self) {
+                                    var per_id = self.previousElementSibling.value;
+                                    var first_name = self.innerText;
+                                    var staff_id = self.nextElementSibling.innerText;
+                                    var offer_time = self.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+                                    var area = self.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+                                    var level = self.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+                                    offer_time = offer_time.replace(/\//g, '-');
+                                    document.getElementById('input-0').value = per_id;
+                                    document.getElementById('input-1').value = first_name;
+                                    document.getElementById('input-2').value = staff_id;
+                                    document.getElementById('autoclose-datepicker').value = offer_time;
+                                    document.getElementById('input-5').value = area;
+                                    document.getElementById('input-6').value = level;
+                                }
+                            </script>
                             <div class="modal-body">
-                                <!-- <form name = 'update'  action="" method="post"> -->
-
-                                <div class="form-group">
+                                <form id="modify" name='update' action="{% url "突击队人员修改" %}" method="post">
                                     {% csrf_token %}
-                                    <label for="input-1">姓名 <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" name="name" placeholder="" >
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="input-2">工号 <span style="color:red">*</span></label>
-                                    <input type="text" class="form-control" name="staff_id" placeholder="">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="input-3">人员技能 <span style="color:red">*</span></label>
-                                    <div>
-                                        <select class="form-control multiple-select" multiple="multiple" name="jineng">
-                                            <option >安服基础</option>
-                                            <option>渗透测试</option>
-                                            <option>天眼分析</option>
-                                            <option>其他</option>
-                                        </select>
+                                    <input name="id" id="input-0" type="hidden"/>
+                                    <div class="form-group">
+                                        {% csrf_token %}
+                                        <label for="input-1">姓名 <span style="color:red">*</span></label>
+                                        <input type="text" id="input-1" class="form-control" name="name" placeholder="">
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label>入职时间 <span style="color:red">*</span></label>
-                                    <input type="text" id="autoclose-datepicker" class="form-control"
-                                           data-date-format="yyyy-mm-dd" name="ruzhitime">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="input-4">发展方向 <span style="color:red">*</span></label>
-                                    <div>
-                                        <select class="form-control single-select" name="fazhan">
-                                            <option selected="selected" disabled="disabled" style='display: none'
-                                                    value=''></option>
-                                            <option>安全服务</option>
-                                            <option>项目管理</option>
-                                            <option>渗透测试</option>
-                                            <option>天眼分析</option>
-                                            <option>应急响应</option>
-                                            <option>其他</option>
-                                        </select>
+                                    <div class="form-group">
+                                        <label for="input-2">工号 <span style="color:red">*</span></label>
+                                        <input type="text" id="input-2" class="form-control" name="staff_id"
+                                               placeholder="">
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="input-5">所在地</label>
-                                    <input type="text" class="form-control" name="diqu" placeholder="">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="input-6">等级</label>
-                                    <input type="text" class="form-control" name="dengji" placeholder="">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="input-7">状态 <span style="color:red">*</span></label>
-                                    <div>
-                                        <select class="form-control single-select" name="zhuangtai">
-                                            <option selected="selected" disabled="disabled" style='display: none'
-                                                    value=''></option>
-                                            <option value='0'>待分配</option>
-                                            <option value='1'>项目中</option>
-                                        </select>
+                                    <div class="form-group">
+                                        <label for="input-3">人员技能 <span style="color:red">*</span></label>
+                                        <div>
+                                            <select class="form-control multiple-select" multiple="multiple"
+                                                    name="jineng">
+                                                <option>安服基础</option>
+                                                <option>渗透测试</option>
+                                                <option>天眼分析</option>
+                                                <option>其他</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i><a
-                                            href="javascript:{document.getElementById('update').submit()}">确认</a>
-                                    </button>
-                                    <input type="hidden">
-                                </div>
+                                    <div class="form-group">
+                                        <label>入职时间 <span style="color:red">*</span></label>
+                                        <input type="text" id="autoclose-datepicker" class="form-control"
+                                               data-date-format="yyyy-mm-dd" name="ruzhitime">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-4">发展方向 <span style="color:red">*</span></label>
+                                        <div>
+                                            <select class="form-control single-select" name="fazhan">
+                                                <option selected="selected" disabled="disabled" style='display: none'
+                                                        value=''></option>
+                                                <option>安全服务</option>
+                                                <option>项目管理</option>
+                                                <option>渗透测试</option>
+                                                <option>天眼分析</option>
+                                                <option>应急响应</option>
+                                                <option>其他</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-5">所在地</label>
+                                        <input type="text" id="input-5" class="form-control" name="diqu" placeholder="">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-6">等级</label>
+                                        <input type="text" id="input-6" class="form-control" name="dengji"
+                                               placeholder="">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-7">状态 <span style="color:red">*</span></label>
+                                        <div>
+                                            <select class="form-control single-select" name="zhuangtai">
+                                                <option selected="selected" disabled="disabled" style='display: none'
+                                                        value=''></option>
+                                                <option value='0'>待分配</option>
+                                                <option value='1'>项目中</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-light" onclick="modify_person()"><i
+                                                class="fa fa-check-square-o"></i>确认
+                                        </button>
+                                        <input type="hidden">
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -484,6 +506,33 @@
                                                     if (data['status'] == 'success') {
                                                         swal({
                                                             title: "人员添加成功!",
+                                                            icon: "success",
+                                                        }).then((clc) => {
+                                                            window.location.href = "/manageradmin/tjd_list/"
+                                                        });
+                                                    } else {
+                                                        if (data['err'] == 'staff_id') {
+                                                            swal({
+                                                                title: "工号不能重复",
+                                                                icon: "error",
+                                                            })
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        function modify_person() {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/manageradmin/tjd_update/",
+                                                data: $('#modify').serialize(),// 序列化表单值
+                                                async: false,
+                                                success: function (data) {
+                                                    {#alert(data['status']);#}
+                                                    if (data['status'] == 'success') {
+                                                        swal({
+                                                            title: "信息修改成功!",
                                                             icon: "success",
                                                         }).then((clc) => {
                                                             window.location.href = "/manageradmin/tjd_list/"

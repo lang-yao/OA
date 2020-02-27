@@ -235,7 +235,8 @@
                                     {% for xmjl in xmjls %}
                                         <tr>
                                             <input value="{{ xmjl.id }}" type="hidden"/>
-                                            <td data-toggle="modal" data-target="#formemodal">{{ xmjl.first_name }}</td>
+                                            <td data-toggle="modal" data-target="#formemodal"
+                                                onclick="get_modify_msg(this)">{{ xmjl.first_name }}</td>
                                             <td>{{ xmjl.staff_id }}</td>
                                             <td>{{ xmjl.iphone }}</td>
                                             <td>{{ xmjl.email }}</td>
@@ -256,7 +257,23 @@
                                         </tr>
                                     {% endfor %}
                                     </tbody>
-
+                                    <script>
+                                        function get_modify_msg(self) {
+                                            var xmjl_id = self.previousElementSibling.value;
+                                            var first_name = self.innerText;
+                                            var staff_id = self.nextElementSibling.innerText;
+                                            var phone = self.nextElementSibling.nextElementSibling.innerText;
+                                            var email = self.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+                                            var area = self.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+                                            document.getElementById('input-0').value = xmjl_id;
+                                            document.getElementById('input-1').value = first_name;
+                                            document.getElementById('input-2').value = staff_id;
+                                            document.getElementById('input-3').value = phone;
+                                            document.getElementById('input-4').value = email;
+                                            {#document.getElementById('input-5').value = staff_id;#}
+                                            document.getElementById('input-6').value = area;
+                                        }
+                                    </script>
                                 </table>
                             </div>
                         </div>
@@ -282,40 +299,49 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form name='modify' id="modify" action="{% url '项目经理信息修改' %}" method="post">
+                                    {% csrf_token %}
+                                    <input name="xmjl_id" id="input-0" type="hidden"/>
                                     <div class="form-group">
                                         <label for="input-1">姓名</label>
-                                        <input type="text" class="form-control" id="input-1" placeholder="">
+                                        <input name="first_name" type="text" class="form-control" id="input-1"
+                                               placeholder="">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="input-2">工号</label>
-                                        <input type="text" class="form-control" id="input-2" placeholder="">
+                                        <input name="staff_id" type="text" class="form-control" id="input-2"
+                                               placeholder="">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="input-3">电话</label>
-                                        <input type="text" class="form-control" id="input-3" placeholder="">
+                                        <input name="iphone" type="text" class="form-control" id="input-3"
+                                               placeholder="">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="input-4">邮箱</label>
-                                        <input type="text" class="form-control" id="input-4" placeholder="">
+                                        <input name="email" type="text" class="form-control" id="input-4"
+                                               placeholder="">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="input-5">密码</label>
-                                        <input type="password" class="form-control" id="input-5" placeholder="">
+                                        <input name="password" type="password" class="form-control" id="input-5"
+                                               placeholder="">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="input-6">所在地</label>
-                                        <input type="text" class="form-control" id="input-6" placeholder="">
+                                        <input name="diqu" type="text" class="form-control" id="input-6"
+                                               placeholder="">
                                     </div>
 
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i>
+                                        <button type="button" class="btn btn-light" onclick="modify_clerk_staff()"><i
+                                                class="fa fa-check-square-o"></i>
                                             保存
                                         </button>
                                     </div>
@@ -400,7 +426,50 @@
                                                             title: "人员添加成功!",
                                                             icon: "success",
                                                         }).then((clc) => {
-                                                            window.location.href = "/manageradmin/tjd_list/"
+                                                            window.location.href = "/manageradmin/manager_user_list/"
+                                                        });
+                                                    } else {
+                                                        if (data['err'] == 'username') {
+                                                            swal({
+                                                                title: "用户名不能重复",
+                                                                icon: "error",
+                                                            })
+                                                        } else if (data['err'] == 'staff_id') {
+                                                            swal({
+                                                                title: "工号不能重复",
+                                                                icon: "error",
+                                                            })
+                                                        } else if (data['err'] == 'iphone') {
+                                                            swal({
+                                                                title: "电话不能重复",
+                                                                icon: "error",
+                                                            })
+                                                        } else if (data['err'] == 'email') {
+                                                            swal({
+                                                                title: "邮箱不能重复",
+                                                                icon: "error",
+                                                            })
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+
+
+                                        function modify_clerk_staff() {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/manageradmin/modify_staff/",
+                                                data: $('#modify').serialize(),// 序列化表单值
+                                                async: false,
+                                                success: function (data) {
+                                                    {#alert(data['status']);#}
+                                                    if (data['status'] == 'success') {
+                                                        swal({
+                                                            title: "信息修改成功!",
+                                                            icon: "success",
+                                                        }).then((clc) => {
+                                                            window.location.href = "/manageradmin/manager_user_list/"
                                                         });
                                                     } else {
                                                         if (data['err'] == 'username') {

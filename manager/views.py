@@ -107,5 +107,7 @@ def deman_access(request):
         old_access[num]['access'] = str(access[num])
     # todo 需要判断
     xqaddcl.access = json.dumps(old_access)
+    # todo 状态变更
+    xqaddcl.zhuangtai = 4
     xqaddcl.save()
     return JsonResponse({'status': 'success'})

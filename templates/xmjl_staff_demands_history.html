@@ -235,6 +235,7 @@
                                     {% for xmsqd in Xmsqds %}
                                         <tr>
                                             <input value="{{ xmsqd.id }}" type="hidden"/>
+                                            {#                                        todo 状态3#}
                                             {% if xmsqd.zhuangtai == 3 %}
                                                 <td data-toggle="modal" data-target="#formemodal"
                                                     onclick="add_input_id(this)">{{ xmsqd.xqid }}</td>
@@ -247,9 +248,15 @@
                                             <td>{{ xmsqd.kstime | date:'Y/m/d' }}-{{ xmsqd.jstime | date:'Y/m/d' }}</td>
                                             <td>{{ xmsqd.xqry }}</td>
                                             <td>{{ xmsqd.get_zhuangtai_display }}</td>
-                                            <td data-toggle="modal"
-                                                data-target="#form-access"
-                                                onclick="access_data(this)">{{ xmsqd.fpry.all | join_members:',' }}</td>
+                                            {% if xmsqd.zhuangtai == 3 %}
+                                                <td data-toggle="modal"
+                                                    data-target="#form-access"
+                                                    onclick="access_data(this)">{{ xmsqd.fpry.all | join_members:',' }}</td>
+                                            {% else %}
+                                                <td> {{ xmsqd.fpry.all | join_members:',' }}</td>
+                                            {% endif %}
+
+
                                             <td>{{ xmsqd.clbz }}</td>
                                         </tr>
                                     {% endfor %}
@@ -309,10 +316,20 @@
                                             $(trs.children).each(function (index, element) {
                                                 var staff_id = element.firstElementChild.innerText;
                                                 var access_num = element.lastElementChild.firstElementChild.firstElementChild.lastElementChild.childElementCount;
-                                                {#console.log(staff_id, access_num)#}
                                                 access_of_all[staff_id] = access_num
                                             });
-                                            console.log(access_of_all);
+                                            for (var i in access_of_all) {
+                                                console.log(i, access_of_all[i])
+                                                if (access_of_all[i] == 0) {
+                                                    swal({
+                                                        title: "未评完成价!",
+                                                        text: "请确认所有人员已评价。",
+                                                        icon: "error",
+                                                    });
+                                                    return;
+                                                }
+                                            }
+                                            {#console.log(access_of_all);#}
                                             $.ajax({
                                                 type: "POST",
                                                 headers: {

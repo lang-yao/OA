@@ -40,6 +40,8 @@
     <!--Touchspin-->
     <link href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet"
           type="text/css">
+    <!--fivestar-->
+    <link href="{% static 'css/fivestar.css' %}" rel="stylesheet"/>
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -269,7 +271,7 @@
                                             <td>{{ xmsqd.get_zhuangtai_display }}</td>
                                             <td data-toggle="modal"
                                                 data-target="#form-access"
-                                                onclick="access_data()">{{ xmsqd.fpry.all | join_members:',' }}</td>
+                                                onclick="access_data(this)">{{ xmsqd.fpry.all | join_members:',' }}</td>
                                             <td>{{ xmsqd.clbz }}</td>
                                         </tr>
                                     {% endfor %}
@@ -294,9 +296,10 @@
                                             }
                                         }
 
-                                        function access_data() {
+                                        function access_data(self) {
                                             var csrfcookies = $.cookie('csrftoken');
-                                            var demand_id = document.getElementsByClassName("odd")[0].firstElementChild.value;
+                                            var demand_id = self.parentElement.firstElementChild.value;
+                                            var dirc = {};
                                             $.ajax({
                                                 type: "POST",
                                                 headers: {
@@ -306,10 +309,35 @@
                                                 data: {
                                                     id: demand_id,
                                                 },
-                                                {#async: false,#}
+                                                async: false,   //异步等待
                                                 success: function (data) {
-                                                    {#alert(data['status']);#}
+                                                    dirc = data;
+                                                    var tab = document.getElementById("access_tab").children[1];
+                                                    tab.innerHTML = "";
+                                                    if (document.getElementsByName('xmxqd_id').length == 0) {
+                                                        var ele = document.createElement('input');
+                                                        ele.setAttribute('value', demand_id);
+                                                        ele.setAttribute('type', 'hidden');
+                                                        ele.setAttribute('name', 'xmxqd_id');
+                                                        document.getElementById("access_tab").append(ele);
+                                                    }
+                                                    for (var staff_id in data) {
+                                                        var new_tr = '<tr><td>' + staff_id + "</td><td>" + data[staff_id]['name'] + "</td><td><div class='fivestar'></div></td></tr>"
+                                                        tab.innerHTML = tab.innerHTML + new_tr;
+                                                    }
                                                 }
+                                            });
+                                            var stars = document.getElementsByClassName("fivestar");
+                                            $(stars).each(function (index, star) {
+                                                var id = star.parentElement.parentElement.firstElementChild.innerText;
+                                                console.log(dirc[id]['access'])
+                                                $(star).markingSystem({
+                                                    num: 5,
+                                                    unit: '星',
+                                                    grade: dirc[id]['access'],
+                                                    height: 20,
+                                                    width: 20,
+                                                });
                                             });
                                         }
                                     </script>
@@ -383,7 +411,7 @@
                                     {% csrf_token %}
                                     <div class="form-group">
                                         <label for="input-3">支持人员</label>
-                                        <table id="example" class="table table-bordered">
+                                        <table id="access_tab" class="table table-bordered">
                                             <thead>
                                             <tr>
                                                 <th>工号</th>
@@ -392,23 +420,21 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {#                                            {% for xmsqd in Xmsqds %}#}
                                             <tr>
-                                                <td>aaa</td>
-                                                <td>aaa</td>
-                                                <td>
-                                                    点击<a href="#" style="color: #0dceec">评价</a>
-                                                </td>
+                                                {#                                                <td>aaa</td>#}
+                                                {#                                                <td>aaa</td>#}
+                                                {#                                                <td>#}
+                                                {#                                                    点击<a href="#" style="color: #0dceec">评价</a>#}
+                                                {#                                                </td>#}
                                             </tr>
-                                            {#                                            {% endfor %}#}
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-light"><i class="fa fa-check-square-o"></i>
-                                            确认
-                                        </button>
-                                    </div>
+                                    {#                                    <div class="form-group">#}
+                                    {#                                        <button type="button" class="btn btn-light"><i class="fa fa-check-square-o"></i>#}
+                                    {#                                            确认#}
+                                    {#                                        </button>#}
+                                    {#                                    </div>#}
                                 </form>
                             </div>
                         </div>
@@ -508,7 +534,8 @@
 
 <!--Bootstrap Datepicker Js-->
 <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
-
+<!--five star Js-->
+<script src="{% static 'js/markingSystem.js' %}"></script>
 <!--设置默认排序-->
 <script>
     window.onload = function () {

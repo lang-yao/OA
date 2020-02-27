@@ -11,6 +11,7 @@ from . import views
 
 urlpatterns = [
     path('admin_index/', views.tjd_index, name='管理员默认页面模块'),
+    # /manageradmin/admin_user_add
     path('admin_user_add/', views.admin_user_add, name='管理人员添加'),
 
     path('tjd_list/', views.tjd_list, name='管理员突击队模块'),

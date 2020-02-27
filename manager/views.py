@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-import time
+import time, json
 # Create your views here.
 from django.shortcuts import redirect
 # 访问限制模块 @login_required
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.http import require_http_methods
 
 cltime = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 
@@ -64,3 +65,47 @@ def manager_xqhistory(request):
         'Xmsqds': Xmsqds
     }
     return render(request, 'xmjl_staff_demands_history.html', context)
+
+
+@permission_required('manager.add_xmsqd', login_url='login', raise_exception=True)
+@require_http_methods(["POST"])
+def query_demand_staff(request):
+    '''人员查询模块'''
+    id = request.POST['id']
+    xqaddcl = Xmsqd.objects.get(pk=id)
+    access = xqaddcl.access
+    data = {}
+    if access != '':
+        access = json.loads(access, strict=False)
+        for i in xqaddcl.fpry.all():
+            data[i.staff_id] = {
+                "name": i.name,
+                "access": access[i.staff_id]['access']
+            }
+    else:
+        for i in xqaddcl.fpry.all():
+            data[i.staff_id] = {
+                "name": i.name,
+                "access": ""
+            }
+        xqaddcl.access = json.dumps(data)
+        xqaddcl.save()
+    print(data)
+    return JsonResponse(data)
+
+
+@permission_required('manager.add_xmsqd', login_url='login', raise_exception=True)
+@require_http_methods(["POST"])
+def deman_access(request):
+    '''评价模块'''
+    data = json.loads(request.body.decode())
+    id = data['id']
+    access = data['access_data']
+    xqaddcl = Xmsqd.objects.get(pk=id)
+    old_access = json.loads(xqaddcl.access)
+    for num in access.keys():
+        old_access[num]['access'] = str(access[num])
+    # todo 需要判断
+    xqaddcl.access = json.dumps(old_access)
+    xqaddcl.save()
+    return JsonResponse({'status': 'success'})

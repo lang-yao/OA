@@ -933,12 +933,35 @@ def query_demand_staff(request):
     '''人员查询模块'''
     id = request.POST['id']
     xqaddcl = Xmsqd.objects.get(pk=id)
-    access = json.loads(xqaddcl.access)
+    access = xqaddcl.access
     data = {}
-    for i in xqaddcl.fpry.all():
-        print(i.staff_id, i.name)
-        data[i.staff_id] = {
-            'name': i.name,
-            'access': access[i.staff_id]
-        }
+    if access != '':
+        access = json.loads(access, strict=False)
+        for i in xqaddcl.fpry.all():
+            data[i.staff_id] = {
+                "name": i.name,
+                "access": access[i.staff_id]['access']
+            }
+    else:
+        for i in xqaddcl.fpry.all():
+            data[i.staff_id] = {
+                "name": i.name,
+                "access": ""
+            }
+        xqaddcl.access = json.dumps(data)
+        xqaddcl.save()
+    print(data)
     return JsonResponse(data)
+# def query_demand_staff(request):
+#     '''人员查询模块'''
+#     id = request.POST['id']
+#     xqaddcl = Xmsqd.objects.get(pk=id)
+#     access = json.loads(xqaddcl.access)
+#     data = {}
+#     for i in xqaddcl.fpry.all():
+#         data[i.staff_id] = {
+#             'name': i.name,
+#             'access': access[i.staff_id]
+#         }
+#     print(data)
+#     return JsonResponse(data)

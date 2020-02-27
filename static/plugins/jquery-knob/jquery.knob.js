@@ -454,7 +454,7 @@
 
         // Abstract methods
         this.listen = function () {
-        }; // on start, one time
+        }; // on star, one time
         this.extend = function () {
         }; // each time configure triggered
         this.init = function () {
@@ -679,7 +679,7 @@
             this.angleOffset = this.o.angleOffset * Math.PI / 180;
             this.angleArc = this.o.angleArc * Math.PI / 180;
 
-            // compute start and end angles
+            // compute star and end angles
             this.startAngle = 1.5 * Math.PI + this.angleOffset;
             this.endAngle = 1.5 * Math.PI + this.angleOffset + this.angleArc;
 

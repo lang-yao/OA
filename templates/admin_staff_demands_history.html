@@ -276,77 +276,6 @@
                                         </tr>
                                     {% endfor %}
                                     </tbody>
-                                    <script>
-                                        function add_input_id(self) {
-                                            ele_id = self.previousElementSibling.value;
-                                            ele = document.createElement('input');
-                                            ele.setAttribute('value', ele_id);
-                                            ele.setAttribute('type', 'hidden');
-                                            ele.setAttribute('name', 'id');
-                                            par = document.getElementsByClassName('modal-body')[0].firstElementChild;
-                                            par.append(ele);
-                                        }
-
-                                        function xuqiu_his_hidden(hid_id) {
-                                            var lab_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[2];
-                                            if (hid_id == '3') {
-                                                lab_diqu.style.display = 'none';
-                                            } else if (hid_id == '1') {
-                                                lab_diqu.style.display = 'block';
-                                            }
-                                        }
-
-                                        function access_data(self) {
-                                            var csrfcookies = $.cookie('csrftoken');
-                                            var demand_id = self.parentElement.firstElementChild.value;
-                                            var dirc = {};
-                                            $.ajax({
-                                                type: "POST",
-                                                headers: {
-                                                    'X-CSRFtoken': csrfcookies,
-                                                },
-                                                url: "/manageradmin/query_demand_person/",
-                                                data: {
-                                                    id: demand_id,
-                                                },
-                                                async: false,   //异步等待
-                                                success: function (data) {
-                                                    dirc = data;
-                                                    var tab = document.getElementById("access_tab").children[1];
-                                                    tab.innerHTML = "";
-                                                    if (document.getElementsByName('xmxqd_id').length == 0) {
-                                                        var ele = document.createElement('input');
-                                                        ele.setAttribute('value', demand_id);
-                                                        ele.setAttribute('type', 'hidden');
-                                                        ele.setAttribute('name', 'xmxqd_id');
-                                                        document.getElementById("access_tab").append(ele);
-                                                    }
-                                                    for (var staff_id in data) {
-                                                        if (data[staff_id]['access'] == '') {
-                                                            var new_tr = '<tr><td>' + staff_id + "</td><td>" + data[staff_id]['name'] + "</td><td><div class='fivestar'>未评价</div></td></tr>"
-                                                        } else {
-                                                            var new_tr = '<tr><td>' + staff_id + "</td><td>" + data[staff_id]['name'] + "</td><td><div class='fivestar'></div></td></tr>"
-                                                        }
-                                                        tab.innerHTML = tab.innerHTML + new_tr;
-                                                    }
-                                                }
-                                            });
-                                            var stars = document.getElementsByClassName("fivestar");
-                                            $(stars).each(function (index, star) {
-                                                var id = star.parentElement.parentElement.firstElementChild.innerText;
-                                                if (dirc[id]['access'] != '') {
-                                                    $(star).markingSystem({
-                                                        num: 5,
-                                                        unit: '星',
-                                                        grade: dirc[id]['access'],
-                                                        height: 20,
-                                                        width: 20,
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    </script>
-
                                 </table>
                             </div>
                         </div>
@@ -541,6 +470,8 @@
 <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 <!--five star Js-->
 <script src="{% static 'js/markingSystem.js' %}"></script>
+<!--manager admin Js-->
+<script src="{% static 'js/manageradmin.js' %}"></script>
 <!--设置默认排序-->
 <script>
     window.onload = function () {

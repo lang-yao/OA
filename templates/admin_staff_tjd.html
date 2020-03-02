@@ -297,23 +297,6 @@
                                 </button>
 
                             </div>
-                            <script>
-                                function get_modify_msg(self) {
-                                    var per_id = self.previousElementSibling.value;
-                                    var first_name = self.innerText;
-                                    var staff_id = self.nextElementSibling.innerText;
-                                    var offer_time = self.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-                                    var area = self.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-                                    var level = self.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-                                    offer_time = offer_time.replace(/\//g, '-');
-                                    document.getElementById('input-0').value = per_id;
-                                    document.getElementById('input-1').value = first_name;
-                                    document.getElementById('input-2').value = staff_id;
-                                    document.getElementById('autoclose-datepicker').value = offer_time;
-                                    document.getElementById('input-5').value = area;
-                                    document.getElementById('input-6').value = level;
-                                }
-                            </script>
                             <div class="modal-body">
                                 <form id="modify" name='update' action="{% url "突击队人员修改" %}" method="post">
                                     {% csrf_token %}
@@ -493,62 +476,6 @@
                                             确认
                                         </button>
                                     </div>
-                                    {#TODO 添加人员#}
-                                    <script>
-                                        function submit_add_person() {
-                                            $.ajax({
-                                                type: "POST",
-                                                url: "/manageradmin/tjd_add/",
-                                                data: $('#add').serialize(),// 序列化表单值
-                                                async: false,
-                                                success: function (data) {
-                                                    {#alert(data['status']);#}
-                                                    if (data['status'] == 'success') {
-                                                        swal({
-                                                            title: "人员添加成功!",
-                                                            icon: "success",
-                                                        }).then((clc) => {
-                                                            window.location.href = "/manageradmin/tjd_list/"
-                                                        });
-                                                    } else {
-                                                        if (data['err'] == 'staff_id') {
-                                                            swal({
-                                                                title: "工号不能重复",
-                                                                icon: "error",
-                                                            })
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                        }
-
-                                        function modify_person() {
-                                            $.ajax({
-                                                type: "POST",
-                                                url: "/manageradmin/tjd_update/",
-                                                data: $('#modify').serialize(),// 序列化表单值
-                                                async: false,
-                                                success: function (data) {
-                                                    {#alert(data['status']);#}
-                                                    if (data['status'] == 'success') {
-                                                        swal({
-                                                            title: "信息修改成功!",
-                                                            icon: "success",
-                                                        }).then((clc) => {
-                                                            window.location.href = "/manageradmin/tjd_list/"
-                                                        });
-                                                    } else {
-                                                        if (data['err'] == 'staff_id') {
-                                                            swal({
-                                                                title: "工号不能重复",
-                                                                icon: "error",
-                                                            })
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    </script>
                                 </form>
                             </div>
                         </div>
@@ -698,7 +625,8 @@
 <script src="{% static 'plugins/jquery-multi-select/jquery.multi-select.js' %}"></script>
 <script src="{% static 'plugins/jquery-multi-select/jquery.quicksearch.js' %}"></script>
 
-
+<!--manager admin Js-->
+<script src="{% static 'js/manageradmin.js' %}"></script>
 <script>
     $(document).ready(function () {
         $('.single-select').select2();

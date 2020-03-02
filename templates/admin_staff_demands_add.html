@@ -262,29 +262,7 @@
                                         </tr>
                                     {% endfor %}
                                     </tbody>
-                                    <script>
-                                        function add_input_id(self) {
-                                            ele_id = self.previousElementSibling.value;
-                                            ele = document.createElement('input');
-                                            ele.setAttribute('value', ele_id);
-                                            ele.setAttribute('type', 'hidden');
-                                            ele.setAttribute('name', 'id');
-                                            par = document.getElementsByClassName('modal-body')[0].firstElementChild;
-                                            par.append(ele);
-                                        }
 
-                                        function xuqiu_add_hidden(hid_id) {
-                                            var lab_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[2];
-                                            var sel_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[3].children[0];
-                                            if (hid_id == '2') {
-                                                lab_diqu.style.display = 'none';
-                                                sel_diqu.style.display = 'none';
-                                            } else if (hid_id == '1') {
-                                                lab_diqu.style.display = 'block';
-                                                sel_diqu.style.display = 'block';
-                                            }
-                                        }
-                                    </script>
                                 </table>
                             </div>
                         </div>
@@ -460,6 +438,8 @@
 <!--Bootstrap Datepicker Js-->
 <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
+<!--manager admin Js-->
+<script src="{% static 'js/manageradmin.js' %}"></script>
 <!--设置默认排序-->
 <script>
     window.onload = function () {

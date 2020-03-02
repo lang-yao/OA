@@ -311,26 +311,6 @@
                                     </div>
                                 </div>
                             </form>
-                            <script>
-                                function submit_add_demand() {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/manager/manager_xqadd/",
-                                        data: $('#add').serialize(),// 序列化表单值
-                                        async: false,
-                                        success: function (data) {
-                                            if (data['status'] == 'success') {
-                                                swal({
-                                                    title: "添加成功!",
-                                                    icon: "success",
-                                                }).then((clc) => {
-                                                    window.location.href = "/manager/manager_xqadd/"
-                                                });
-                                            }
-                                        }
-                                    });
-                                }
-                            </script>
                         </div>
                     </div>
 
@@ -418,6 +398,9 @@
 
 <!--Bootstrap Datepicker Js-->
 <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+
+<!--manager Js-->
+<script src="{% static 'js/manager.js' %}"></script>
 <script>
     $('#default-datepicker').datepicker({
         todayHighlight: true

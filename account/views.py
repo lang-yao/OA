@@ -1,12 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Permission, Group, ContentType
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
 # from django.contrib.auth import authenticate
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+from django.shortcuts import render, redirect
+
+
 # Create your views here.
-from manageradmin.models import Tjd_staff
-from .models import User
 
 
 def user_login(request):
@@ -59,5 +58,3 @@ def user_logout(request):
 
 
 
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives

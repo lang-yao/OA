@@ -471,7 +471,7 @@
                                     {#                             <button type="submit" class="btn btn-light"><i class="fa fa-check-square-o"></i><a href="javascript:{document.getElementById('add').submit()}">确认</a> </button>#}
                                     {#                                <input type="hidden">#}
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-light" onclick="submit_add_person()"><i
+                                        <button type="button" class="btn btn-light" onclick="submit_add_staff()"><i
                                                 class="fa fa-check-square-o"></i>
                                             确认
                                         </button>
@@ -627,6 +627,7 @@
 
 <!--manager admin Js-->
 <script src="{% static 'js/manageradmin.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
 <script>
     $(document).ready(function () {
         $('.single-select').select2();

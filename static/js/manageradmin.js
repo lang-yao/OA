@@ -1,13 +1,3 @@
-function add_input_id(self) {
-    ele_id = self.previousElementSibling.value;
-    ele = document.createElement('input');
-    ele.setAttribute('value', ele_id);
-    ele.setAttribute('type', 'hidden');
-    ele.setAttribute('name', 'id');
-    par = document.getElementsByClassName('modal-body')[0].firstElementChild;
-    par.append(ele);
-}
-
 function xuqiu_add_hidden(hid_id) {
     var lab_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[2];
     var sel_diqu = document.getElementsByClassName("modal-body")[0].children[0].children[3].children[0];
@@ -89,11 +79,15 @@ function access_data(self) {
     });
 }
 
-function submit_add_person() {
+function submit_add_staff() {
+    var form_data = $('#add').serializeArray();
+    if (check_serialize(form_data) != true) {
+        return false;
+    }
     $.ajax({
         type: "POST",
         url: "/manageradmin/tjd_add/",
-        data: $('#add').serialize(),// 序列化表单值
+        data: $('#add').serializeArray(),// 序列化表单值
         async: false,
         success: function (data) {
             if (data['status'] == 'success') {
@@ -116,6 +110,10 @@ function submit_add_person() {
 }
 
 function modify_person() {
+    var form_data = $('#modify').serializeArray();
+    if (check_serialize(form_data) != true) {
+        return false;
+    }
     $.ajax({
         type: "POST",
         url: "/manageradmin/tjd_update/",
@@ -157,7 +155,11 @@ function get_modify_msg(self) {
     document.getElementById('input-6').value = level;
 }
 
-function submit_add_person() {
+function submit_add_xmjl() {
+    var form_data = $('#add').serializeArray();
+    if (check_serialize(form_data) != true) {
+        return false;
+    }
     $.ajax({
         type: "POST",
         url: "/manageradmin/manager_user_add/",
@@ -200,6 +202,10 @@ function submit_add_person() {
 
 
 function modify_clerk_staff() {
+    var form_data = $('#modify').serializeArray();
+    if (check_serialize(form_data) != true) {
+        return false;
+    }
     $.ajax({
         type: "POST",
         url: "/manageradmin/modify_staff/",
